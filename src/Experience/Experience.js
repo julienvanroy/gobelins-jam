@@ -3,7 +3,7 @@ import Sizes from './Utils/Sizes.js'
 import Time from './Utils/Time.js'
 import Camera from './Camera.js'
 import Renderer from './Renderer.js'
-import World from './World/World.js'
+import World from './Scene/World/World.js'
 import {Mesh, Scene} from "three";
 
 let instance = null
