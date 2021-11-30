@@ -1,53 +1,76 @@
-import { BoxGeometry, Mesh, MeshBasicMaterial } from "three";
+import { BoxGeometry, Mesh, MeshBasicMaterial, PlaneGeometry } from "three";
 import Experience from "../../Experience";
+import { AxesHelper } from "three/src/helpers/AxesHelper";
+
+import { Text } from "troika-three-text";
 
 export default class MiniGameOrdi {
   constructor() {
     this.experience = new Experience();
     this.scene = this.experience.scene;
-    this._initGeometry();
-    this._initMaterial();
-    this._initMesh();
-    this._initMisc();
+    this.keyToPress; 
+    this._initTirage();  
+  }
+
+  _initTirage() {
+    console.log('initTirage');
+    
+    // touches
+    let keyCodes = [81, 69, 84, 85, 83, 70, 72, 75, 90, 67, 66, 77];
+    let keyToPress;
+    
+    setInterval(() => {
+      keyToPress = keyCodes[Math.floor(Math.random() * keyCodes.length)];
+      this._initMesh(keyToPress);
+    }, 2000);
+
+      // event listener
+    document.addEventListener("keydown", onDocumentKeyDown, false);
+    function onDocumentKeyDown(event) {
+      var keyCode = event.which;
+      if (keyCode == keyToPress) {
+        console.log("RIGHT");
+      } else {
+        console.log("FALSE");
+      }
+    }
   }
 
   _initGeometry() {
+    console.log("initGeometry");
     this.geometry = new BoxGeometry();
   }
 
   _initMaterial() {
+    console.log("initMaterial");
     this.material = new MeshBasicMaterial({ color: 0xffffff });
+    this.textMaterial = new MeshBasicMaterial();
   }
 
-  _initMesh() {
-    this.cube = new Mesh(this.geometry, this.material);
-    this.scene.add(this.cube);
-  }
-
-  _initMisc() {
-      let keyCodes = [81, 69, 84, 85, 83, 70, 72, 75, 90, 67, 66, 77];
-      let keyToPress;
+  _initMesh(keyToPress) {
+    console.log("initMesh");
+    console.log('topress', String.fromCharCode(this.keyToPress));
     
-      setInterval(() => {
-        keyToPress = keyCodes[Math.floor(Math.random() * keyCodes.length)];
+    // Create:
+    const myText = new Text();
+    
+    // Set properties to configure:
+    myText.text = String.fromCharCode(keyToPress);
+    myText.fontSize = 2;
+    myText.position.z = 0;
+    myText.color = 0x9966ff;
+    
+    // Update the rendering:
+    myText.sync();
+    this.scene.add(myText);
 
-        console.log(String.fromCharCode(keyToPress))
-      }, 2000);
+    setInterval(() => {
+      this.scene.remove(myText)
+    }, 2000);
 
-      document.addEventListener("keydown", onDocumentKeyDown, false);
-    function onDocumentKeyDown(event) {
-      var keyCode = event.which;
-      if (keyCode == keyToPress) {
-        console.log("RIGHT")
-      } else {
-        console.log("FALSE")
-      }
-    }
-
+    this.scene.add(new AxesHelper(200));
   }
 
   update() {
-    var xSpeed = 0.0001;
-    var ySpeed = 0.0001;
   }
 }
