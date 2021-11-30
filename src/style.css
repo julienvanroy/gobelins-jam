@@ -12,8 +12,25 @@ body
 
 .webgl
 {
-    position: fixed;
-    top: 0;
-    left: 0;
     outline: none;
+}
+
+#overlay {
+    position: fixed;
+    inset: 0;
+    background: black;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    cursor: pointer;
+    text-align: center;
+}
+
+#overlay h1{
+    position: absolute;
+    display: block;
+    inset: 50% 0 auto;
+    transform: translateY(-50%);
+    margin: auto;
+    color: white;
 }

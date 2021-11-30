@@ -3,8 +3,11 @@ import Sizes from './Utils/Sizes.js'
 import Time from './Utils/Time.js'
 import Camera from './Camera.js'
 import Renderer from './Renderer.js'
-import World from './World/World.js'
+import World from './Scene/World.js'
 import {Mesh, Scene} from "three";
+import Overlay from "./Overlay";
+import Video from "./Components/Video";
+import Intro from "./Scene/Intro";
 
 let instance = null
 
@@ -29,10 +32,12 @@ export default class Experience
         this.debug = new Debug()
         this.sizes = new Sizes()
         this.time = new Time()
+        this.overlay = new Overlay()
+        this.video = new Video()
         this.scene = new Scene()
         this.camera = new Camera()
         this.renderer = new Renderer()
-        this.world = new World()
+        this.world = new Intro()
 
         // Resize event
         this.sizes.on('resize', () =>
@@ -64,6 +69,7 @@ export default class Experience
 
     destroy()
     {
+        this.overlay.destroy()
         this.sizes.off('resize')
         this.time.off('tick')
 
