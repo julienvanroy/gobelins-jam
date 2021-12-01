@@ -15,6 +15,8 @@ import LightGameScene from "./Scene/PartyGame/LightGameScene";
 import MarketGameScene from "./Scene/PartyGame/MarketGameScene";
 import {Vector3} from "three";
 import Mouse from "./Utils/Mouse";
+import Resources from "./Utils/Resources";
+import sources from "./sources";
 
 let instance = null;
 
@@ -37,14 +39,16 @@ export default class Experience {
         this.sizes = new Sizes()
         this.mouse = new Mouse();
         this.time = new Time()
+        this.resources = new Resources(sources)
         this.video = new Video()
         this.camera = new Camera()
         this.renderer = new Renderer()
         this.posMesh = new Vector3(0, 0, 0);
         this._initScenes()
-        this.transitionScene = new TransitionScene(this.marketGameScene)
+        this.transitionScene = new TransitionScene(this.burgerGameScene)
         this.gameManager = new GameManager()
         this.overlay = new Overlay()
+
 
         // Resize event
         this.sizes.on('resize', () => {
