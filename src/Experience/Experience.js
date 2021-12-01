@@ -5,6 +5,7 @@ import Camera from './Camera.js'
 import Renderer from './Renderer.js'
 import World from './Scene/World/World.js'
 import {Mesh, Scene} from "three";
+import Mouse from "./Utils/Mouse";
 
 let instance = null
 
@@ -29,6 +30,7 @@ export default class Experience
         this.debug = new Debug()
         this.sizes = new Sizes()
         this.time = new Time()
+        this.mouse = new Mouse()
         this.scene = new Scene()
         this.camera = new Camera()
         this.renderer = new Renderer()
@@ -44,6 +46,12 @@ export default class Experience
         this.time.on('tick', () =>
         {
             this.update()
+        })
+
+        // Mouse move event
+        this.time.on('mouseMove', () =>
+        {
+            this.mouseMove()
         })
     }
 
@@ -62,10 +70,15 @@ export default class Experience
         this.debug.end()
     }
 
+    mouseMove() {
+
+    }
+
     destroy()
     {
         this.sizes.off('resize')
         this.time.off('tick')
+        this.mouseMove().off('mouseMove')
 
         // Traverse the whole scene
         this.scene.traverse((child) =>
