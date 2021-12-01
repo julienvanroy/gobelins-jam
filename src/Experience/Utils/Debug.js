@@ -21,25 +21,17 @@ export default class Debug
     }
 
     _setStats() {
-        this.fpsGraph = this.pane.addBlade({
-            view: 'fpsgraph',
-
-            label: 'fpsgraph',
-            lineCount: 2,
-        });
         this.stats = new Stats()
         document.body.appendChild( this.stats.dom );
     }
 
     begin() {
         if(!this.active) return;
-        this.fpsGraph.begin();
         this.stats.begin()
     }
 
     end() {
         if(!this.active) return;
-        this.fpsGraph.end();
         this.stats.end()
     }
 

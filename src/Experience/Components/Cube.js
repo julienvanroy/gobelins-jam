@@ -1,12 +1,10 @@
 import {BoxGeometry, Mesh, MeshBasicMaterial} from "three";
-import Experience from "../Experience";
 
 export default class Cube
 {
-    constructor()
+    constructor(_scene)
     {
-        this.experience = new Experience()
-        this.scene = this.experience.scene
+        this.scene = _scene
         this._initGeometry()
         this._initMaterial()
         this._initMesh()
@@ -24,13 +22,13 @@ export default class Cube
 
     _initMesh()
     {
-        this.cube = new Mesh( this.geometry, this.material );
-        this.scene.add( this.cube );
+        this.mesh = new Mesh( this.geometry, this.material );
+        this.scene.add( this.mesh );
     }
 
     update()
     {
-        this.cube.rotation.x += 0.01;
-        this.cube.rotation.y += 0.01;
+        this.mesh.rotation.x += 0.01;
+        this.mesh.rotation.y += 0.01;
     }
 }

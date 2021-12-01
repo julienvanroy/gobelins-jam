@@ -1,4 +1,5 @@
 import EventEmitter from './EventEmitter.js'
+import {Clock} from "three";
 
 export default class Time extends EventEmitter
 {
@@ -11,6 +12,7 @@ export default class Time extends EventEmitter
         this.current = this.start
         this.elapsed = 0
         this.delta = 16
+        this.clock = new Clock()
 
         window.requestAnimationFrame(() =>
         {
