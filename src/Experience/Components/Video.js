@@ -7,6 +7,7 @@ export default class Video {
     setSrc(_src) {
         this.instance.pause()
         this.instance.src = _src
+        this.instance.currentTime = 0;
     }
 
     isVideoPlaying(){
