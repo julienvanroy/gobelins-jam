@@ -7,7 +7,7 @@ export default class GameManager {
         this.transitionScene = this.experience.transitionScene
         this.blackScene = this.experience.blackScene
         this.videoScene = this.experience.videoScene
-        this.burgerScene = this.experience.burgerScene
+        this.burgerScene = this.experience.burgerGameScene
         this.isIntroScene = false
         this.isPartyGame = false
         this.isOutroScene = false

@@ -1,30 +1,44 @@
 import FXScene from "../Core/FXScene";
-import {Mesh, MeshBasicMaterial, PlaneBufferGeometry, Vector3} from "three";
+import {Mesh, MeshBasicMaterial, PlaneBufferGeometry, Vector3, NearestFilter} from "three";
+import {gsap} from "gsap";
 
 export default class BurgerGameScene extends FXScene {
     constructor() {
         super()
         this.positionBurger = new Vector3(0, -1, 0)
-        this._initMeshCube()
-        window.addEventListener("keydown", this._listener.bind(this), true);
-    }
+        this.resources = this.experience.resources
 
-    _initMeshCube() {
-        this.geometryCube = new PlaneBufferGeometry(0.5, 0.5);
-        this.materialCube = new MeshBasicMaterial({color: 0xffffff});
+        this.index = 0
+
+        this.resources.on('ready', () =>
+        {
+            this.geometryPlane = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
+            const colorTexture = this.resources.items.burgerGame1Background
+            colorTexture.generateMipmaps = false
+            colorTexture.minFilter = NearestFilter
+            const material = new MeshBasicMaterial({map: colorTexture, transparent: true});
+            const mesh = new Mesh(this.geometryPlane, material)
+            this.scene.add(mesh)
+            window.addEventListener("keydown", this._listener.bind(this), true);
+        })
     }
 
     _listener(event) {
         if (event.defaultPrevented) return;
         switch (event.keyCode) {
             case 32:
-                const mesh = new Mesh(this.geometryCube, this.materialCube)
-                mesh.position.y = this.positionBurger.y
-
-                this.positionBurger.y += 0.5
-
+                const colorTexture = this.resources.items[`burgerGame1-${this.index}`]
+                colorTexture.generateMipmaps = false
+                colorTexture.minFilter = NearestFilter
+                const material = new MeshBasicMaterial({map: colorTexture, transparent: true});
+                const mesh = new Mesh(this.geometryPlane, material)
+                mesh.position.y = 3
                 this.scene.add(mesh)
-                console.log(mesh)
+                this.index ++
+                gsap.to(mesh.position, {
+                    y: 0,
+                    duration: 1
+                })
                 break;
             default:
                 return;
