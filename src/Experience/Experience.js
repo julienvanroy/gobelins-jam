@@ -12,13 +12,10 @@ import Overlay from "./Overlay";
 
 let instance = null
 
-export default class Experience
-{
-    constructor(_canvas)
-    {
+export default class Experience {
+    constructor(_canvas) {
         // Singleton
-        if(instance)
-        {
+        if (instance) {
             return instance
         }
         instance = this
@@ -38,46 +35,42 @@ export default class Experience
         this.camera = new Camera()
         this.renderer = new Renderer()
         this._initScenes()
-        this.transition = new TransitionScene(this.blackScene, this.worldScene)
+        this.transitionScene = new TransitionScene(this.blackScene)
+
+        setTimeout(()=> this.transitionScene.transition(this.worldScene), 5000)
+        setTimeout(()=> this.transitionScene.transition(this.videoScene), 10000)
 
         // Resize event
-        this.sizes.on('resize', () =>
-        {
+        this.sizes.on('resize', () => {
             this.resize()
         })
 
         // Time tick event
-        this.time.on('tick', () =>
-        {
+        this.time.on('tick', () => {
             this.update()
         })
     }
 
-    _initScenes()
-    {
+    _initScenes() {
         this.worldScene = new WorldScene()
         this.blackScene = new BlackScene()
-        this.introScene = new VideoScene('intro.mp4')
-        this.outroScene = new VideoScene('outro.mp4')
+        this.videoScene = new VideoScene()
     }
 
-    resize()
-    {
+    resize() {
         this.camera.resize()
         this.renderer.resize()
-        this.transition.resize()
+        this.transitionScene.resize()
     }
 
-    update()
-    {
+    update() {
         this.debug.begin()
         this.camera.update()
-        this.transition.update()
+        this.transitionScene.update()
         this.debug.end()
     }
 
-    destroy()
-    {
+    destroy() {
         this.sizes.off('resize')
         this.time.off('tick')
 
@@ -86,7 +79,7 @@ export default class Experience
         this.camera.controls.dispose()
         this.renderer.instance.dispose()
 
-        if(this.debug.active)
+        if (this.debug.active)
             this.debug.ui.destroy()
     }
 }

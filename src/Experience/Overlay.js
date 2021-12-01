@@ -1,9 +1,7 @@
 import Experience from "./Experience";
 
-export default class Overlay
-{
-    constructor()
-    {
+export default class Overlay {
+    constructor() {
         this.experience = new Experience()
         this.video = this.experience.video
         this.element = document.getElementById('overlay')
@@ -11,20 +9,17 @@ export default class Overlay
         this.element.addEventListener('click', this.hide.bind(this))
     }
 
-    show()
-    {
+    show() {
         this.element.style.display = 'block'
         this.video.instance.play()
     }
 
-    hide()
-    {
+    hide() {
         this.element.style.display = 'none'
         this.video.instance.pause()
     }
 
-    destroy()
-    {
+    destroy() {
         this.element.removeEventListener('click', this.hide.bind(this))
     }
 }

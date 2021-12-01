@@ -4,11 +4,11 @@ import Experience from "../Experience";
 
 export default class VideoScene extends FXScene
 {
-    constructor(_src)
+    constructor()
     {
         super()
         this.experience = new Experience()
         this.camera = this.experience.camera
-        this.videoPlane = new VideoPlane(_src, this.camera.widthVisible, this.camera.heightVisible, this.scene)
+        this.videoPlane = new VideoPlane(this.camera.widthVisible, this.camera.heightVisible, this.scene)
     }
 }

@@ -4,8 +4,8 @@ export default class Video {
         this.instance.addEventListener('play', this._play);
     }
 
-    setSrc(_src)
-    {
+    setSrc(_src) {
+        this.instance.pause()
         this.src = _src
     }
 
