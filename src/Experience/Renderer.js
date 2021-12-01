@@ -8,8 +8,6 @@ export default class Renderer
         this.experience = new Experience()
         this.canvas = this.experience.canvas
         this.sizes = this.experience.sizes
-        this.scene = this.experience.scene
-        this.camera = this.experience.camera
 
         this._setInstance()
     }
@@ -31,8 +29,10 @@ export default class Renderer
         this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
     }
 
+    /*
     update()
     {
-        this.instance.render(this.scene, this.camera.instance)
+        //this.instance.render(this.scene, this.camera.instance)
     }
+    */
 }

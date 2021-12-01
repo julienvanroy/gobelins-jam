@@ -2,9 +2,9 @@ import {Mesh, MeshBasicMaterial, PlaneBufferGeometry, VideoTexture, NearestFilte
 import Experience from "../Experience";
 
 export default class VideoPlane {
-    constructor(_src) {
+    constructor(_src, _scene) {
         this.experience = new Experience()
-        this.scene = this.experience.scene
+        this.scene = _scene
         this.camera = this.experience.camera
         this.video = this.experience.video
 

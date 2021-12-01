@@ -1,14 +1,17 @@
 import Cube from "../Components/Cube";
+import FXScene from "./Core/FXScene";
 
-export default class World
+export default class World extends FXScene
 {
     constructor()
     {
-        this.cube = new Cube()
+        super()
+        this.cube = new Cube(this.scene)
     }
 
-    update()
+    update(_rtt)
     {
+        super.update(_rtt)
         this.cube.update()
     }
 }
