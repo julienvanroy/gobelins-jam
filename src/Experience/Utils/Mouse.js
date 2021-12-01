@@ -1,14 +1,15 @@
 import EventEmitter from './EventEmitter.js'
 import {Vector3} from "three";
+import Experience from "../Experience";
 import Sizes from "./Sizes";
 
 export default class Mouse extends EventEmitter {
     constructor() {
         super();
-
         const sizes = new Sizes()
 
         this.position = new Vector3()
+
 
         const listener = (e) => {
             if (e.changedTouches && e.changedTouches.length) {
@@ -22,7 +23,6 @@ export default class Mouse extends EventEmitter {
 
             // Get mouse value in -1 to 1 range, with y flipped
             this.position.set((e.x / sizes.width) * 2 - 1, (e.y / sizes.height) * -2 + 1, 0);
-
             this.trigger('mouseMove')
         }
 
