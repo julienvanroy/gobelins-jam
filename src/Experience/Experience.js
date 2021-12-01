@@ -11,7 +11,7 @@ import BlackScene from "./Scene/BlackScene";
 import Overlay from "./Overlay";
 import GameManager from "./GameManager";
 
-let instance = null
+let instance = null;
 
 export default class Experience {
     constructor(_canvas) {
@@ -21,11 +21,11 @@ export default class Experience {
         }
         instance = this
 
-        // Global access
-        window.experience = this
+    // Global access
+    window.experience = this;
 
-        // Options
-        this.canvas = _canvas
+    // Options
+    this.canvas = _canvas;
 
         // Setup
         this.debug = new Debug()
