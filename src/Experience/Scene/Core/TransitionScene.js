@@ -86,7 +86,6 @@ export default class TransitionScene {
         this.camera.right = this.sizes.width / 2
         this.camera.top = this.sizes.height / 2
         this.camera.bottom = this.sizes.height / -2
-        this.camera.updateProjectionMatrix()
     }
 
 }

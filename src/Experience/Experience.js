@@ -4,9 +4,11 @@ import Time from './Utils/Time.js'
 import Camera from './Camera.js'
 import Renderer from './Renderer.js'
 import Video from "./Components/Video";
-import IntroScene from "./Scene/IntroScene";
+import VideoScene from "./Scene/VideoScene";
 import TransitionScene from "./Scene/Core/TransitionScene";
-import World from "./Scene/World";
+import WorldScene from "./Scene/WorldScene";
+import BlackScene from "./Scene/BlackScene";
+import Overlay from "./Overlay";
 
 let instance = null
 
@@ -32,11 +34,11 @@ export default class Experience
         this.sizes = new Sizes()
         this.time = new Time()
         this.video = new Video()
+        this.overlay = new Overlay()
         this.camera = new Camera()
         this.renderer = new Renderer()
-        this.world = new World()
-        this.intro = new IntroScene()
-        this.transition = new TransitionScene(this.world, this.intro)
+        this._initScenes()
+        this.transition = new TransitionScene(this.blackScene, this.worldScene)
 
         // Resize event
         this.sizes.on('resize', () =>
@@ -49,6 +51,14 @@ export default class Experience
         {
             this.update()
         })
+    }
+
+    _initScenes()
+    {
+        this.worldScene = new WorldScene()
+        this.blackScene = new BlackScene()
+        this.introScene = new VideoScene('intro.mp4')
+        this.outroScene = new VideoScene('outro.mp4')
     }
 
     resize()
@@ -70,6 +80,8 @@ export default class Experience
     {
         this.sizes.off('resize')
         this.time.off('tick')
+
+        this.overlay.destroy()
 
         this.camera.controls.dispose()
         this.renderer.instance.dispose()

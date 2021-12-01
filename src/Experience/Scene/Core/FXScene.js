@@ -1,5 +1,5 @@
 import Experience from "../../Experience";
-import {Scene, WebGLRenderTarget, LinearFilter, RGBFormat} from "three";
+import {Scene, LinearFilter, RGBFormat, WebGLMultisampleRenderTarget} from "three";
 
 export default class FXScene {
     constructor() {
@@ -9,7 +9,7 @@ export default class FXScene {
         this.camera = this.experience.camera
         this.scene = new Scene()
         const renderTargetParameters = {minFilter: LinearFilter, magFilter: LinearFilter, format: RGBFormat};
-        this.fbo = new WebGLRenderTarget(window.innerWidth, window.innerHeight, renderTargetParameters);
+        this.fbo = new WebGLMultisampleRenderTarget(window.innerWidth, window.innerHeight, renderTargetParameters);
     }
 
     update(_rtt) {

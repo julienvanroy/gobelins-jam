@@ -15,6 +15,8 @@ export default class Camera
         this._setControls()
 
         this.vFOV = MathUtils.degToRad( this.instance.fov ); // convert vertical fov to radians
+        this.heightVisible = 2 * Math.tan(this.vFOV / 2) * this.instance.position.z; // visible height
+        this.widthVisible = this.heightVisible * this.instance.aspect;
     }
 
     _setInstance(_positionX, _positionY, _positionZ)

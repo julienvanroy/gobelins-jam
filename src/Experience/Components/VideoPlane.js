@@ -2,22 +2,19 @@ import {Mesh, MeshBasicMaterial, PlaneBufferGeometry, VideoTexture, NearestFilte
 import Experience from "../Experience";
 
 export default class VideoPlane {
-    constructor(_src, _scene) {
+    constructor(_src, _width, _height, _scene) {
         this.experience = new Experience()
         this.scene = _scene
-        this.camera = this.experience.camera
         this.video = this.experience.video
 
-        this._initGeometry()
+        this._initGeometry(_width, _height)
         this._initTexture()
         this._initMaterial()
         this._initMesh()
     }
 
-    _initGeometry() {
-        this.heightGeometry = 2 * Math.tan(this.camera.vFOV / 2) * this.camera.instance.position.z; // visible height
-        this.widthGeometry = this.heightGeometry * this.camera.instance.aspect;
-        this.geometry = new PlaneBufferGeometry(this.widthGeometry, this.heightGeometry, 1, 1);
+    _initGeometry(_width, _height) {
+        this.geometry = new PlaneBufferGeometry(_width, _height, 1, 1);
     }
 
     _initTexture() {
