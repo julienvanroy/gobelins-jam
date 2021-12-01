@@ -1,6 +1,5 @@
 import EventEmitter from './EventEmitter.js'
 import {Vector3} from "three";
-import Experience from "../Experience";
 import Sizes from "./Sizes";
 
 export default class Mouse extends EventEmitter {
@@ -9,7 +8,6 @@ export default class Mouse extends EventEmitter {
         const sizes = new Sizes()
 
         this.position = new Vector3()
-
 
         const listener = (e) => {
             if (e.changedTouches && e.changedTouches.length) {

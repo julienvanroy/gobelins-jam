@@ -16,6 +16,9 @@ body
 }
 
 #overlay {
+    /* TODO : delete this */
+    display: none;
+    /* end Todo */
     position: fixed;
     inset: 0;
     background: black;

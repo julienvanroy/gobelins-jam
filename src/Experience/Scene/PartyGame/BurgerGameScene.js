@@ -1,6 +1,6 @@
 import FXScene from "../Core/FXScene";
 
-export default class BurgerScene extends FXScene {
+export default class BurgerGameScene extends FXScene {
     constructor() {
         super()
         console.log('yes')

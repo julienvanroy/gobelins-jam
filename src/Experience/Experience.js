@@ -10,7 +10,11 @@ import WorldScene from "./Scene/WorldScene";
 import BlackScene from "./Scene/BlackScene";
 import Overlay from "./Overlay";
 import GameManager from "./GameManager";
-import BurgerScene from "./Scene/PartyGame/BurgerScene";
+import BurgerGameScene from "./Scene/PartyGame/BurgerGameScene";
+import LightGameScene from "./Scene/PartyGame/LightGameScene";
+import MarketGameScene from "./Scene/PartyGame/MarketGameScene";
+import {Vector3} from "three";
+import Mouse from "./Utils/Mouse";
 
 let instance = null;
 
@@ -31,12 +35,14 @@ export default class Experience {
         // Setup
         this.debug = new Debug()
         this.sizes = new Sizes()
+        this.mouse = new Mouse();
         this.time = new Time()
         this.video = new Video()
         this.camera = new Camera()
         this.renderer = new Renderer()
+        this.posMesh = new Vector3(0, 0, 0);
         this._initScenes()
-        this.transitionScene = new TransitionScene(this.burgerScene)
+        this.transitionScene = new TransitionScene(this.marketGameScene)
         this.gameManager = new GameManager()
         this.overlay = new Overlay()
 
@@ -49,19 +55,33 @@ export default class Experience {
         this.time.on('tick', () => {
             this.update()
         })
+
+        this.mouse.on("mouseMove", () => {
+            this.mouseMove();
+        });
     }
 
     _initScenes() {
         this.worldScene = new WorldScene()
         this.blackScene = new BlackScene()
         this.videoScene = new VideoScene()
-        this.burgerScene = new BurgerScene()
+        this.burgerGameScene = new BurgerGameScene()
+        //this.lightGameScene = new LightGameScene()
+        this.marketGameScene = new MarketGameScene()
     }
 
     resize() {
         this.camera.resize()
         this.renderer.resize()
         this.transitionScene.resize()
+    }
+
+    mouseMove() {
+        const vector = new Vector3(this.mouse.position.x, this.mouse.position.y, 0.5);
+        vector.unproject(this.camera.instance);
+        const dir = vector.sub(this.camera.instance.position).normalize();
+        const distance = -this.camera.instance.position.z / dir.z;
+        this.posMesh = this.camera.instance.position.clone().add(dir.multiplyScalar(distance));
     }
 
     update() {
@@ -75,6 +95,7 @@ export default class Experience {
     destroy() {
         this.sizes.off('resize')
         this.time.off('tick')
+        this.time.off('mouseMove')
 
         this.overlay.destroy()
 
