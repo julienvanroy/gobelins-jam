@@ -1,10 +1,11 @@
 import MiniGameOrdi from "./MiniGameOrdi";
+import MiniGameCaddie from "./MiniGameCaddie";
 
 export default class World
 {
     constructor()
     {
-        this.MGOrdi = new MiniGameOrdi()
+        this.MGOrdi = new MiniGameCaddie()
     }
 
     update()
