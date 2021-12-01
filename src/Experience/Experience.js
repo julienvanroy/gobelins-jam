@@ -10,6 +10,7 @@ import WorldScene from "./Scene/WorldScene";
 import BlackScene from "./Scene/BlackScene";
 import Overlay from "./Overlay";
 import GameManager from "./GameManager";
+import BurgerScene from "./Scene/PartyGame/BurgerScene";
 
 let instance = null
 
@@ -35,7 +36,7 @@ export default class Experience {
         this.camera = new Camera()
         this.renderer = new Renderer()
         this._initScenes()
-        this.transitionScene = new TransitionScene(this.blackScene)
+        this.transitionScene = new TransitionScene(this.burgerScene)
         this.gameManager = new GameManager()
         this.overlay = new Overlay()
 
@@ -54,6 +55,7 @@ export default class Experience {
         this.worldScene = new WorldScene()
         this.blackScene = new BlackScene()
         this.videoScene = new VideoScene()
+        this.burgerScene = new BurgerScene()
     }
 
     resize() {
