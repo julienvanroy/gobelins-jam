@@ -9,6 +9,7 @@ import TransitionScene from "./Scene/Core/TransitionScene";
 import WorldScene from "./Scene/WorldScene";
 import BlackScene from "./Scene/BlackScene";
 import Overlay from "./Overlay";
+import GameManager from "./GameManager";
 
 let instance = null
 
@@ -31,14 +32,12 @@ export default class Experience {
         this.sizes = new Sizes()
         this.time = new Time()
         this.video = new Video()
-        this.overlay = new Overlay()
         this.camera = new Camera()
         this.renderer = new Renderer()
         this._initScenes()
         this.transitionScene = new TransitionScene(this.blackScene)
-
-        setTimeout(()=> this.transitionScene.transition(this.worldScene), 5000)
-        setTimeout(()=> this.transitionScene.transition(this.videoScene), 10000)
+        this.gameManager = new GameManager()
+        this.overlay = new Overlay()
 
         // Resize event
         this.sizes.on('resize', () => {
@@ -67,6 +66,7 @@ export default class Experience {
         this.debug.begin()
         this.camera.update()
         this.transitionScene.update()
+        this.gameManager.update()
         this.debug.end()
     }
 

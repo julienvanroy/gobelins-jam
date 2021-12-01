@@ -1,4 +1,4 @@
-import {Mesh, OrthographicCamera, PlaneGeometry, Scene, ShaderMaterial, MathUtils} from "three";
+import {Mesh, OrthographicCamera, PlaneGeometry, Scene, ShaderMaterial} from "three";
 import Experience from "../../Experience";
 import vertexTransition from './transition.vert'
 import fragmentTransition from './transition.frag'

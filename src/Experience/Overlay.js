@@ -4,6 +4,9 @@ export default class Overlay {
     constructor() {
         this.experience = new Experience()
         this.video = this.experience.video
+        this.transitionScene = this.experience.transitionScene
+        this.gameManager = this.experience.gameManager
+        this.videoScene = this.experience.videoScene
         this.element = document.getElementById('overlay')
 
         this.element.addEventListener('click', this.hide.bind(this))
@@ -11,12 +14,14 @@ export default class Overlay {
 
     show() {
         this.element.style.display = 'block'
-        this.video.instance.play()
     }
 
     hide() {
         this.element.style.display = 'none'
-        this.video.instance.pause()
+        this.video.setSrc('intro.mp4')
+        this.video.instance.play()
+        this.transitionScene.transition(this.videoScene)
+        this.gameManager.isIntroScene = true
     }
 
     destroy() {

@@ -18,7 +18,7 @@ export default class VideoPlane {
     }
 
     _initTexture() {
-        this.texture = new VideoTexture(this.video);
+        this.texture = new VideoTexture(this.video.instance);
         this.texture.generateMipmaps = false
         this.texture.minFilter = NearestFilter
     }
@@ -28,7 +28,7 @@ export default class VideoPlane {
     }
 
     _initMesh() {
-        this.videoPlane = new Mesh(this.geometry, this.material);
-        this.scene.add(this.videoPlane);
+        this.mesh = new Mesh(this.geometry, this.material);
+        this.scene.add(this.mesh);
     }
 }
