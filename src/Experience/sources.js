@@ -14,7 +14,17 @@ export default [
     {
         name: 'lightGame1Background',
         type: 'texture',
-        path: 'img/game/light/1/background.jpg'
+        path: 'img/game/light/1/background.png'
+    },
+    {
+        name: 'lightGame2Background',
+        type: 'texture',
+        path: 'img/game/light/2/background.png'
+    },
+    {
+        name: 'lightGame3Background',
+        type: 'texture',
+        path: 'img/game/light/3/background.png'
     },
     // -- Burger Party 1 //
     {

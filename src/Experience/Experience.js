@@ -45,10 +45,13 @@ export default class Experience {
         this.renderer = new Renderer()
         this.posMesh = new Vector3(0, 0, 0);
         this._initScenes()
-        this.transitionScene = new TransitionScene(this.burgerGameScene)
+        this.transitionScene = new TransitionScene(this.lightGameScene)
         this.gameManager = new GameManager()
         this.overlay = new Overlay()
 
+        if(this.transitionScene.currentScene == this.lightGameScene){
+            this.renderer.instance.setClearColor('#1d1e82')
+        }
 
         // Resize event
         this.sizes.on('resize', () => {
@@ -70,8 +73,8 @@ export default class Experience {
         this.blackScene = new BlackScene()
         this.videoScene = new VideoScene()
         this.burgerGameScene = new BurgerGameScene()
-        this.lightGameScene = new LightGameScene()
         this.marketGameScene = new MarketGameScene()
+        this.lightGameScene = new LightGameScene()
     }
 
     resize() {
