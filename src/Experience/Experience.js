@@ -28,11 +28,11 @@ export default class Experience {
         }
         instance = this
 
-    // Global access
-    window.experience = this;
+        // Global access
+        window.experience = this;
 
-    // Options
-    this.canvas = _canvas;
+        // Options
+        this.canvas = _canvas;
 
         // Setup
         this.debug = new Debug()
@@ -69,9 +69,17 @@ export default class Experience {
         this.worldScene = new WorldScene()
         this.blackScene = new BlackScene()
         this.videoScene = new VideoScene()
+        this._initScenePartyGame()
+    }
+
+    _initScenePartyGame() {
+        this.difficultyGameLevel = 1
+
         this.burgerGameScene = new BurgerGameScene()
         this.lightGameScene = new LightGameScene()
         this.marketGameScene = new MarketGameScene()
+
+        this.gameLevel = [this.burgerGameScene]
     }
 
     resize() {
