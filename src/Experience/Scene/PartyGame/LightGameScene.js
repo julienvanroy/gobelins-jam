@@ -1,11 +1,25 @@
 import FXScene from "../Core/FXScene";
 import {AxesHelper} from "three/src/helpers/AxesHelper";
+import {Mesh, MeshBasicMaterial, NearestFilter, PlaneBufferGeometry} from "three";
 
 export default class LightGameScene extends FXScene {
     constructor() {
         super()
+        this.resources = this.experience.resources
+
+        this.resources.on('ready', () =>
+        {
+            const geometry = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
+            const colorTexture = this.resources.items.lightGame1Background
+            colorTexture.generateMipmaps = false
+            colorTexture.minFilter = NearestFilter
+            const material = new MeshBasicMaterial({map: colorTexture});
+            const background = new Mesh(geometry, material)
+            this.scene.add(background)
+        })
+
         this.keyToPress = null;
-        this._initTirage();
+        //this._initTirage();
     }
 
     _initTirage() {
@@ -19,7 +33,7 @@ export default class LightGameScene extends FXScene {
             this._initMesh(keyToPress);
         }, 2000);
 
-        // event listener
+        // event listener![](../../../../static/262232304_618700865842370_551201813994132176_n.jpeg)
         document.addEventListener("keydown", onDocumentKeyDown, false);
         function onDocumentKeyDown(event) {
             var keyCode = event.which;

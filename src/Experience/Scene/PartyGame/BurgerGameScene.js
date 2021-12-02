@@ -5,7 +5,6 @@ import {gsap} from "gsap";
 export default class BurgerGameScene extends FXScene {
     constructor() {
         super()
-        this.positionBurger = new Vector3(0, -1, 0)
         this.resources = this.experience.resources
 
         this.index = 0
@@ -16,7 +15,7 @@ export default class BurgerGameScene extends FXScene {
             const colorTexture = this.resources.items.burgerGame1Background
             colorTexture.generateMipmaps = false
             colorTexture.minFilter = NearestFilter
-            const material = new MeshBasicMaterial({map: colorTexture, transparent: true});
+            const material = new MeshBasicMaterial({map: colorTexture});
             const mesh = new Mesh(this.geometryPlane, material)
             this.scene.add(mesh)
             window.addEventListener("keydown", this._listener.bind(this), true);

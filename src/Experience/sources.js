@@ -1,5 +1,15 @@
 export default [
     {
+        name: 'marketGame1Background',
+        type: 'texture',
+        path: 'img/game/market/1/background.jpg'
+    },
+    {
+        name: 'lightGame1Background',
+        type: 'texture',
+        path: 'img/game/light/1/background.jpg'
+    },
+    {
         name: 'burgerGame1Background',
         type: 'texture',
         path: 'img/game/burger/1/background.png'

@@ -45,7 +45,7 @@ export default class Experience {
         this.renderer = new Renderer()
         this.posMesh = new Vector3(0, 0, 0);
         this._initScenes()
-        this.transitionScene = new TransitionScene(this.burgerGameScene)
+        this.transitionScene = new TransitionScene(this.marketGameScene)
         this.gameManager = new GameManager()
         this.overlay = new Overlay()
 
@@ -70,7 +70,7 @@ export default class Experience {
         this.blackScene = new BlackScene()
         this.videoScene = new VideoScene()
         this.burgerGameScene = new BurgerGameScene()
-        //this.lightGameScene = new LightGameScene()
+        this.lightGameScene = new LightGameScene()
         this.marketGameScene = new MarketGameScene()
     }
 

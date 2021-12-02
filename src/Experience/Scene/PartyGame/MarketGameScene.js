@@ -1,5 +1,5 @@
 import FXScene from "../Core/FXScene";
-import {CircleGeometry, Mesh, MeshBasicMaterial, PlaneGeometry} from "three";
+import {CircleGeometry, Mesh, MeshBasicMaterial, NearestFilter, PlaneBufferGeometry, PlaneGeometry} from "three";
 import gsap from "gsap";
 
 export default class MarketGameScene extends FXScene {
@@ -12,10 +12,25 @@ export default class MarketGameScene extends FXScene {
 
         this.ARTICLE_RADIUS = 0.5;
 
-        this._initGeometry();
-        this._initMaterial();
-        this._initMesh();
-        this._initGenerator();
+        this.resources = this.experience.resources
+
+        this.resources.on('ready', () =>
+        {
+            const geometry = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
+            const colorTexture = this.resources.items.marketGame1Background
+            colorTexture.generateMipmaps = false
+            colorTexture.minFilter = NearestFilter
+            const material = new MeshBasicMaterial({map: colorTexture});
+            const background = new Mesh(geometry, material)
+            this.scene.add(background)
+
+
+
+            this._initGeometry();
+            this._initMaterial();
+            this._initMesh();
+            this._initGenerator();
+        })
     }
 
     _initGeometry() {
