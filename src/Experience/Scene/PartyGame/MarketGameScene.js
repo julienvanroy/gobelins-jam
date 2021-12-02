@@ -105,7 +105,9 @@ export default class MarketGameScene extends FXScene {
 
     update(_rtt) {
         super.update(_rtt)
-        this.caddie.position.x = this.experience.posMesh.x;
-        this.processArticleMovement();
+        if(this?.caddie) {
+            this.caddie.position.x = this.experience.posMesh.x;
+            this.processArticleMovement();
+        }
     }
 }
