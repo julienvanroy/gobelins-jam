@@ -12,7 +12,7 @@ export default class BurgerGameScene extends FXScene {
         this.resources.on('ready', () =>
         {
             this.geometryPlane = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
-            const colorTexture = this.resources.items.burgerGame1Background
+            const colorTexture = this.resources.items.burgerGame3Background
             colorTexture.generateMipmaps = false
             colorTexture.minFilter = NearestFilter
             const material = new MeshBasicMaterial({map: colorTexture});
@@ -26,7 +26,7 @@ export default class BurgerGameScene extends FXScene {
         if (event.defaultPrevented) return;
         switch (event.keyCode) {
             case 32:
-                const colorTexture = this.resources.items[`burgerGame1-${this.index}`]
+                const colorTexture = this.resources.items[`burgerGame3-${this.index}`]
                 colorTexture.generateMipmaps = false
                 colorTexture.minFilter = NearestFilter
                 const material = new MeshBasicMaterial({map: colorTexture, transparent: true});
@@ -36,7 +36,7 @@ export default class BurgerGameScene extends FXScene {
                 this.index ++
                 gsap.to(mesh.position, {
                     y: 0,
-                    duration: 1
+                    duration: 0.25
                 })
                 break;
             default:

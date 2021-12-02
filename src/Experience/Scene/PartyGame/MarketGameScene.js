@@ -17,7 +17,7 @@ export default class MarketGameScene extends FXScene {
         this.resources.on('ready', () =>
         {
             const geometry = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
-            const colorTexture = this.resources.items.marketGame1Background
+            const colorTexture = this.resources.items.marketGameBackground
             colorTexture.generateMipmaps = false
             colorTexture.minFilter = NearestFilter
             const material = new MeshBasicMaterial({map: colorTexture});
