@@ -6,9 +6,74 @@ export default [
         path: 'img/game/market/background.png'
     },
     {
-        name: 'marketGameBackground',
+        name: 'marketGameScreen',
+        type: 'texture',
+        path: 'img/game/market/screen.png'
+    },
+    {
+        name: 'marketGameCart',
         type: 'texture',
         path: 'img/game/market/cart.png'
+    },
+    {
+        name: 'marketGameProduct1',
+        type: 'texture',
+        path: 'img/game/market/product/1.png'
+    },
+    {
+        name: 'marketGameProduct2',
+        type: 'texture',
+        path: 'img/game/market/product/2.png'
+    },
+    {
+        name: 'marketGameProduct3',
+        type: 'texture',
+        path: 'img/game/market/product/3.png'
+    },
+    {
+        name: 'marketGameProduct4',
+        type: 'texture',
+        path: 'img/game/market/product/4.png'
+    },
+    {
+        name: 'marketGameProduct5',
+        type: 'texture',
+        path: 'img/game/market/product/5.png'
+    },
+    {
+        name: 'marketGameProduct6',
+        type: 'texture',
+        path: 'img/game/market/product/6.png'
+    },
+    {
+        name: 'marketGameProduct7',
+        type: 'texture',
+        path: 'img/game/market/product/7.png'
+    },
+    {
+        name: 'marketGameProduct8',
+        type: 'texture',
+        path: 'img/game/market/product/8.png'
+    },
+    {
+        name: 'marketGameProduct9',
+        type: 'texture',
+        path: 'img/game/market/product/9.png'
+    },
+    {
+        name: 'marketGameProduct10',
+        type: 'texture',
+        path: 'img/game/market/product/10.png'
+    },
+    {
+        name: 'marketGameProduct11',
+        type: 'texture',
+        path: 'img/game/market/product/11.png'
+    },
+    {
+        name: 'marketGameProduct12',
+        type: 'texture',
+        path: 'img/game/market/product/12.png'
     },
     // -- Light Party 1 //
     {

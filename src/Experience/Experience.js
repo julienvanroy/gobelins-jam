@@ -43,9 +43,8 @@ export default class Experience {
         this.video = new Video()
         this.camera = new Camera()
         this.renderer = new Renderer()
-        this.posMesh = new Vector3(0, 0, 0);
         this._initScenes()
-        this.transitionScene = new TransitionScene(this.burgerGameScene)
+        this.transitionScene = new TransitionScene(this.marketGameScene)
         this.gameManager = new GameManager()
         this.overlay = new Overlay()
 
@@ -89,11 +88,7 @@ export default class Experience {
     }
 
     mouseMove() {
-        const vector = new Vector3(this.mouse.position.x, this.mouse.position.y, 0.5);
-        vector.unproject(this.camera.instance);
-        const dir = vector.sub(this.camera.instance.position).normalize();
-        const distance = -this.camera.instance.position.z / dir.z;
-        this.posMesh = this.camera.instance.position.clone().add(dir.multiplyScalar(distance));
+        this.marketGameScene.mouseMove()
     }
 
     update() {

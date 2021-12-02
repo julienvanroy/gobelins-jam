@@ -1,113 +1,152 @@
 import FXScene from "../Core/FXScene";
-import {CircleGeometry, Mesh, MeshBasicMaterial, NearestFilter, PlaneBufferGeometry, PlaneGeometry} from "three";
-import gsap from "gsap";
+import {
+    Mesh,
+    MeshBasicMaterial,
+    NearestFilter,
+    PlaneBufferGeometry,
+    PlaneGeometry,
+    Vector3,
+} from "three";
 
 export default class MarketGameScene extends FXScene {
     constructor() {
         super()
-        this.posMesh = this.experience.posMesh;
-
-        this.CADDIE_WIDTH = 1;
-        this.CADDIE_HEIGHT = 0.2;
-
-        this.ARTICLE_RADIUS = 0.5;
+        this.mouse = this.experience.mouse
+        this.positionMouseMesh = new Vector3(0, 0, 0);
+        this.limitScreen = new Vector3(1.7, 1.8, 0);
 
         this.resources = this.experience.resources
 
-        this.resources.on('ready', () =>
-        {
-            const geometry = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
-            const colorTexture = this.resources.items.marketGameBackground
-            colorTexture.generateMipmaps = false
-            colorTexture.minFilter = NearestFilter
-            const material = new MeshBasicMaterial({map: colorTexture});
-            const background = new Mesh(geometry, material)
-            this.scene.add(background)
+        this.idInterval = null
 
+        this.geometryProduct = new PlaneGeometry(0.4, 0.4);
 
+        this.products = []
 
-            this._initGeometry();
-            this._initMaterial();
-            this._initMesh();
-            this._initGenerator();
+        this.resources.on('ready', () => {
+            this._initBackground()
+
+            this._initCart();
+
+            this.startGame()
         })
     }
 
-    _initGeometry() {
-        console.log("initGeometry");
-        this.geometry = new PlaneGeometry(this.CADDIE_WIDTH, this.CADDIE_HEIGHT);
-        this.geometryC = new CircleGeometry(this.ARTICLE_RADIUS, 32);
+    _initBackground() {
+        const geometry = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
+
+        const colorTexture = this.resources.items.marketGameBackground
+        colorTexture.generateMipmaps = false
+        colorTexture.minFilter = NearestFilter
+
+        const materialBg = new MeshBasicMaterial({map: colorTexture, transparent: true});
+        const background = new Mesh(geometry, materialBg)
+        this.scene.add(background)
+
+        const screenTexture = this.resources.items.marketGameScreen
+        screenTexture.generateMipmaps = false
+        screenTexture.minFilter = NearestFilter
+
+        const materialScreen = new MeshBasicMaterial({map: screenTexture, transparent: true});
+        const screen = new Mesh(geometry, materialScreen)
+        screen.position.z = -0.02
+        this.scene.add(screen)
     }
 
-    _initMaterial() {
-        console.log("initMaterial");
-        this.material = new MeshBasicMaterial({ color: 0x99a39c });
-        this.materialC = new MeshBasicMaterial({ color: 0xf57242 });
+    _initCart() {
+        const geometry = new PlaneBufferGeometry(0.5, 0.5);
+        const colorTexture = this.resources.items.marketGameCart
+        colorTexture.generateMipmaps = false
+        colorTexture.minFilter = NearestFilter
+        const material = new MeshBasicMaterial({map: colorTexture, transparent: true});
+
+        this.cart = new Mesh(geometry, material);
+        this.cart.position.y = -0.27;
+        this.scene.add(this.cart);
     }
 
-    _initMesh() {
-        console.log("initMesh");
+    _createProduct() {
+        const min = Math.ceil(1);
+        const max = Math.floor(12);
+        const random = Math.floor(Math.random() * (max - min)) + min;
+        const texture = this.resources.items[`marketGameProduct${random}`]
+        texture.generateMipmaps = false
+        texture.minFilter = NearestFilter
+        const material = new MeshBasicMaterial({map: texture, transparent: true});
+        const product = new Mesh(this.geometryProduct, material);
+        product.position.x = Math.random() * (this.limitScreen.x - (-this.limitScreen.x)) - this.limitScreen.x;
+        product.position.y = this.limitScreen.y
+        product.position.z = -0.01
 
-        // caddie
-        this.caddie = new Mesh(this.geometry, this.material);
-        this.caddie.position.y = this.caddie.position.y - 2;
-        this.scene.add(this.caddie);
+        this.products.push(product)
+        this.scene.add(product);
     }
 
-    _initGenerator() {
-        // setInterval(() => {
-        this.article = new Mesh(this.geometryC, this.materialC);
-        this.article.position.y = 2;
-        this.article.position.x = Math.random() * (3 - -3) + -3;
-        this.scene.add(this.article);
-        console.log("scale", this.article.scale.x);
-
-        // tombe
-        gsap.to(this.article.position, { duration: 1, delay: 1, y: -2 });
-        // fade out
-        gsap.to(this.article.scale, {
-            duration: 2,
-            delay: 3,
-            y: 0,
-            x: 0,
-            onComplete: () => {
-                this.article.geometry.dispose();
-                this.article.material.dispose();
-            },
-        });
-        // }, 1000);
+    startGame() {
+        this.idInterval = setInterval(() => this._createProduct(), 500)
     }
 
-    articleCollisionX() {
-        var halfCaddieWidth = this.CADDIE_WIDTH / 2,
-            caddieX = this.caddie.position.x,
-            articleX = this.article.position.x;
+    _detectCollisionObject(object) {
+        const halfCaddieWidth = this.cart.geometry.parameters.width / 2,
+            halfCaddieHeight = this.cart.geometry.parameters.height / 2,
+            caddiePos = this.cart.position,
+            objectPos = object.position,
+            objectBorder = 0.385,
+            objectWidth = this.geometryProduct.parameters.width - objectBorder,
+            objectHeight = this.geometryProduct.parameters.height - objectBorder
 
-        return (
-            articleX + this.ARTICLE_RADIUS > caddieX - halfCaddieWidth &&
-            articleX - this.ARTICLE_RADIUS < caddieX + halfCaddieWidth
-        );
-    }
+        const isCollisionX =  !!( objectPos.x + objectWidth >= caddiePos.x - halfCaddieWidth && objectPos.x - objectWidth <= caddiePos.x + halfCaddieWidth);
+        const isCollisionY =  !!( objectPos.y + objectHeight >= caddiePos.y - halfCaddieHeight && objectPos.y - objectHeight <= caddiePos.y + halfCaddieHeight);
 
-    articleCollisionY() {
-        var halfCaddieHeight = this.CADDIE_HEIGHT / 2,
-            caddieY = this.caddie.position.y,
-            articleY = this.article.position.y;
-
-        return articleY - this.ARTICLE_RADIUS <= caddieY + halfCaddieHeight;
-    }
-
-    processArticleMovement() {
-        if (this.articleCollisionY() && this.articleCollisionX()) {
-            console.log(String.fromCodePoint(0x1f525));
+        if (isCollisionX && isCollisionY) {
+            this.destroyMesh(object)
         }
+    }
+
+    mouseMove() {
+        const vector = new Vector3(this.mouse.position.x, this.mouse.position.y, 0.5);
+        vector.unproject(this.camera.instance);
+        const dir = vector.sub(this.camera.instance.position).normalize();
+        const distance = -this.camera.instance.position.z / dir.z;
+        this.positionMouseMesh = this.camera.instance.position.clone().add(dir.multiplyScalar(distance));
     }
 
     update(_rtt) {
         super.update(_rtt)
-        if(this?.caddie) {
-            this.caddie.position.x = this.experience.posMesh.x;
-            this.processArticleMovement();
+        if (this?.cart) {
+            if (this.positionMouseMesh.x >= this.limitScreen.x) {
+                this.cart.position.x = this.limitScreen.x
+            } else if (this.positionMouseMesh.x <= -this.limitScreen.x) {
+                this.cart.position.x = -this.limitScreen.x;
+            } else this.cart.position.x = this.positionMouseMesh.x;
+            this.products.map(product => {
+                this._detectCollisionObject(product)
+                product.position.y -= 0.01
+            })
         }
+    }
+
+    destroyMesh(mesh) {
+        if (mesh instanceof Mesh) {
+            mesh.geometry.dispose()
+            // Loop through the material properties
+            for (const key in mesh.material) {
+                const value = mesh.material[key]
+                // Test if there is a dispose function
+                if (value && typeof value.dispose === 'function') {
+                    value.dispose()
+                }
+            }
+
+            this.scene.remove(mesh)
+        }
+    }
+
+    destroy() {
+        clearInterval(this.idInterval)
+        for (let i = this.products.length - 1; i >= 0; i--) {
+            this.destroyMesh(this.products[i])
+        }
+        this.idInterval = null
     }
 }
