@@ -82,8 +82,6 @@ export default class LightGameScene extends FXScene {
                 if (this.toPressCodes.every(item => item === '/')) {
                     this.isWin = true
                 }
-            } else {
-                console.log("n'est pas une touche à appuyer");
             }
         }
     }
