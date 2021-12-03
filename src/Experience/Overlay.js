@@ -26,7 +26,7 @@ export default class Overlay {
 
     replayGame() {
         this.replayBtn.style.display = 'none'
-
+        this.gameManager.reset()
         this.playIntro()
     }
 

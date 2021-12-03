@@ -7,6 +7,7 @@ import {
     Group,
 } from "three";
 import {Text} from "troika-three-text";
+import * as Tone from 'tone'
 
 export default class LightGameScene extends FXScene {
     constructor() {
@@ -20,6 +21,10 @@ export default class LightGameScene extends FXScene {
             transparent: true,
             opacity: 0,
         });
+
+        this.player = new Tone.Player("/mp3/interrupteur.mp3").toDestination();
+        this.player.volume.value = 14;
+
     }
 
     load(){
@@ -77,6 +82,8 @@ export default class LightGameScene extends FXScene {
             if (this.toPressCodes.includes(keyCode)) {
                 // retire la lettre des touches à presser
                 this._turnOnLight(keyCode);
+                this.player.start()
+                this.player.stop("+0.5")
                 var index = this.toPressCodes.indexOf(keyCode)
                 this._turnOffLetter(keyCode)
                 this.toPressCodes[index] = '/'

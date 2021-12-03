@@ -1,4 +1,5 @@
 import Experience from "./Experience";
+import {Howl} from 'howler';
 
 export default class GameManager {
     constructor() {
@@ -10,8 +11,13 @@ export default class GameManager {
         this.videoScene = this.experience.videoScene
         this.gameLevel = this.experience.gameLevel
         this.indexGameLevel = 0
+        this.gameSound = new Howl({
+            src: ['./mp3/game.mp3'],
+            loop: true,
+            volume: 0.25
+        });
 
-        this.currentGame = this.gameLevel[this.indexGameLevel]
+        this.cmeurrentGame = this.gameLevel[this.indexGameLevel]
 
         this.textGameLevel = ["Appuie sur espace pour manger le plus de viande !", "Allume les lumières que les idiots ont éteintes !", "Fais des achats compulsifs en bougeant le caddie!"]
 
@@ -62,9 +68,9 @@ export default class GameManager {
     }
 
     changeDifficulty(){
-        if(this.numberWinRound <= 3) {
+        if(this.numberWinRound < 3) {
             this.experience.difficultyGameLevel = 1
-        }else if(this.numberWinRound <= 6) {
+        }else if(this.numberWinRound < 6) {
             this.experience.difficultyGameLevel = 2
         }else this.experience.difficultyGameLevel = 3
     }
@@ -74,6 +80,7 @@ export default class GameManager {
     }
 
     loadInterScene(isWin) {
+        this.gameSound.stop();
         if(isWin) this.numberWinRound++
         this.isPartyGame = false
         this.chono.style.display = 'none'
@@ -86,6 +93,7 @@ export default class GameManager {
     }
 
     loadPartyGame() {
+        this.gameSound.play();
         this.changeDifficulty()
         this.isPartyGame = true
         this.currentGame = this.gameLevel[this.indexGameLevel]
