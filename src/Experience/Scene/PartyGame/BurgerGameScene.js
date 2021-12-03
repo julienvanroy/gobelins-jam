@@ -1,22 +1,18 @@
 import FXScene from "../Core/FXScene";
 import {Mesh, MeshBasicMaterial, PlaneBufferGeometry, NearestFilter} from "three";
 import {gsap} from "gsap";
-import * as Tone from 'tone'
 
 
 export default class BurgerGameScene extends FXScene {
     constructor() {
         super()
         this.resources = this.experience.resources
-
-        this.synth = new Tone.PolySynth().toDestination();
-
+        this.synth = this.experience.synth
         this.geometryPlane = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
     }
 
     load() {
         this.difficultyGameLevel = this.experience.difficultyGameLevel
-        // this.difficultyGameLevel = 3
         this.setWinCondition()
         const colorTexture = this.resources.items[`burgerGame${this.difficultyGameLevel}Background`]
         colorTexture.generateMipmaps = false
@@ -57,7 +53,7 @@ export default class BurgerGameScene extends FXScene {
                 mesh.position.y = 3
                 this.scene.add(mesh)
                 this.counterWinCondition++
-                // this._playSound(this.counterWinCondition);
+                this._playSound(this.counterWinCondition);
                 this.isWin = (this.counterWinCondition > this.winCondition)
                 if(this.isWin) {
                     gsap.to(mesh.position, {
@@ -83,15 +79,15 @@ export default class BurgerGameScene extends FXScene {
             case 1:
                 this.synth.triggerAttackRelease("C2", "5hz");
                 break;
-        
+
             case 2:
                 this.synth.triggerAttackRelease("D2", "5hz");
                 break;
-        
+
             case 3:
                 this.synth.triggerAttackRelease("E2", "5hz");
                 break;
-        
+
             case 4:
                 this.synth.triggerAttackRelease("F2", "5hz");
                 break;
@@ -180,25 +176,25 @@ export default class BurgerGameScene extends FXScene {
         //         let synth = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch);
         //         synth.autostart = true;
         //         break;
-        
+
         //     case 2:
         //         let pitch2 = new Tone.PitchShift(3).toDestination()
         //         let synth2 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch2);
         //         synth2.autostart = true;
         //         break;
-        
+
         //     case 3:
         //         let pitch3 = new Tone.PitchShift(5).toDestination()
         //         let synth3 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch3);
         //         synth3.autostart = true;
         //         break;
-        
+
         //     case 4:
         //         let pitch4 = new Tone.PitchShift(7).toDestination()
         //         let synth4 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch4);
         //         synth4.autostart = true;
         //         break;
-        
+
         //     case 5:
         //         let pitch5 = new Tone.PitchShift(9).toDestination()
         //         let synth5 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch5);

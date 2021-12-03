@@ -16,6 +16,7 @@ import MarketGameScene from "./Scene/PartyGame/MarketGameScene";
 import Mouse from "./Utils/Mouse";
 import Resources from "./Utils/Resources";
 import sources from "./sources";
+import * as Tone from "tone";
 
 let instance = null;
 
@@ -32,6 +33,8 @@ export default class Experience {
 
         // Options
         this.canvas = _canvas;
+
+        this.synth = new Tone.PolySynth().toDestination();
 
         // Setup
         this.debug = new Debug()
