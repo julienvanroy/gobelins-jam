@@ -23,11 +23,14 @@ export default class MarketGameScene extends FXScene {
 
         this.products = []
 
-            this._initBackground()
+        this._initBackground()
 
-            this._initCart();
+        this._initCart();
 
-            this.startGame()
+    }
+
+    load() {
+        this.startGame()
     }
 
     _initBackground() {
@@ -93,8 +96,8 @@ export default class MarketGameScene extends FXScene {
             objectWidth = this.geometryProduct.parameters.width - objectBorder,
             objectHeight = this.geometryProduct.parameters.height - objectBorder
 
-        const isCollisionX =  !!( objectPos.x + objectWidth >= caddiePos.x - halfCaddieWidth && objectPos.x - objectWidth <= caddiePos.x + halfCaddieWidth);
-        const isCollisionY =  !!( objectPos.y + objectHeight >= caddiePos.y - halfCaddieHeight && objectPos.y - objectHeight <= caddiePos.y + halfCaddieHeight);
+        const isCollisionX = !!(objectPos.x + objectWidth >= caddiePos.x - halfCaddieWidth && objectPos.x - objectWidth <= caddiePos.x + halfCaddieWidth);
+        const isCollisionY = !!(objectPos.y + objectHeight >= caddiePos.y - halfCaddieHeight && objectPos.y - objectHeight <= caddiePos.y + halfCaddieHeight);
 
         if (isCollisionX && isCollisionY) {
             this.destroyMesh(object)
@@ -140,11 +143,14 @@ export default class MarketGameScene extends FXScene {
         }
     }
 
-    destroy() {
+    stopGame() {
         clearInterval(this.idInterval)
+        this.idInterval = null
+    }
+
+    destroy() {
         for (let i = this.products.length - 1; i >= 0; i--) {
             this.destroyMesh(this.products[i])
         }
-        this.idInterval = null
     }
 }

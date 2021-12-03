@@ -24,6 +24,7 @@ export default class LightGameScene extends FXScene {
     }
 
     load(){
+        this.isWin = false
         this.experience.renderer.instance.setClearColor('#1d1e82')
         this._initBackground()
         this._initGroup();
@@ -90,7 +91,7 @@ export default class LightGameScene extends FXScene {
                 this.toPressCodes[index] = '/'
                 console.log('tableau', this.toPressCodes)
                 if (this.toPressCodes.every(item => item === '/')) {
-                    console.log("jeu fini");
+                    this.isWin = true
                 }
             } else {
                 console.log("n'est pas une touche à appuyer");
