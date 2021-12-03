@@ -42,28 +42,30 @@ export default class Experience {
         this.video = new Video()
         this.camera = new Camera()
         this.renderer = new Renderer()
-        this._initScenes()
-        this.transitionScene = new TransitionScene(this.blackScene)
-        this.gameManager = new GameManager()
-        this.overlay = new Overlay()
+        this.resources.on('ready', () => {
+            this._initScenes()
+            this.transitionScene = new TransitionScene(this.blackScene)
+            this.gameManager = new GameManager()
+            this.overlay = new Overlay()
 
-        if(this.transitionScene.currentScene === this.lightGameScene){
-            this.renderer.instance.setClearColor('#1d1e82')
-        }
+            if(this.transitionScene.currentScene === this.lightGameScene){
+                this.renderer.instance.setClearColor('#1d1e82')
+            }
 
-        // Resize event
-        this.sizes.on('resize', () => {
-            this.resize()
+            // Resize event
+            this.sizes.on('resize', () => {
+                this.resize()
+            })
+
+            // Time tick event
+            this.time.on('tick', () => {
+                this.update()
+            })
+
+            this.mouse.on("mouseMove", () => {
+                this.mouseMove();
+            });
         })
-
-        // Time tick event
-        this.time.on('tick', () => {
-            this.update()
-        })
-
-        this.mouse.on("mouseMove", () => {
-            this.mouseMove();
-        });
     }
 
     _initScenes() {

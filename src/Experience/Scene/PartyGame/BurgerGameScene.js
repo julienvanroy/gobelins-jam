@@ -10,10 +10,6 @@ export default class BurgerGameScene extends FXScene {
         this.difficultyGameLevel = this.experience.difficultyGameLevel
 
         this.geometryPlane = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
-
-        this.resources.on('ready', () => {
-            this.load()
-        })
     }
 
     load() {

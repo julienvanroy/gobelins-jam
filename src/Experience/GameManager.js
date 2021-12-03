@@ -9,6 +9,9 @@ export default class GameManager {
         this.blackScene = this.experience.blackScene
         this.videoScene = this.experience.videoScene
         this.gameLevel = this.experience.gameLevel
+        this.indexGameLevel = 0
+
+        this.currentGame = this.gameLevel[this.indexGameLevel]
 
         this.textGameLevel = ["Mange le plus de viande possible !", "Allume les lumières que les idiots ont éteintes !", "Fais des achats compulsifs !"]
 
@@ -58,18 +61,23 @@ export default class GameManager {
         clearInterval(this.timerInterval)
     }
 
-    loadInterScene() {
+    loadInterScene(isWin) {
+        if(isWin) this.numberWinRound++
         this.isPartyGame = false
         this.chono.style.display = 'none'
         this.textGame.textContent = ''
 
         this.isInterScene = true
-        this.video.setSrc(`interScene/${this.numberWinRound}/${this.isPartyGameWin ? 'win.mp4' : 'loose.mp4'}`)
+        this.video.setSrc(`interScene/${this.numberWinRound}/${isWin ? 'win.mp4' : 'loose.mp4'}`)
         this.transitionScene.transition(this.videoScene)
     }
 
     loadPartyGame() {
-        this.transitionScene.transition(this.gameLevel[this.indexGameLevel])
+        this.isPartyGame = true
+        this.currentGame = this.gameLevel[this.indexGameLevel]
+        this.currentGame.destroy()
+        this.currentGame.load()
+        this.transitionScene.transition(this.currentGame)
         this.textGame.textContent = this.textGameLevel[this.indexGameLevel]
         this.setupChrono()
         this.indexGameLevel++
@@ -91,19 +99,19 @@ export default class GameManager {
 
         else if (!this.isPartyGame && !this.isPartyGameWin && this.isPartyGameLost) {
             this.isPartyGameLost = false
-            this.loadInterScene()
+            this.loadInterScene(false)
         }
 
-        else if (!this.isPartyGame && !this.isPartyGameWin && this.isPartyGameLost) {
-            this.isPartyGameLost = false
-            this.loadInterScene()
+        else if (!this.isPartyGame && this.isPartyGameWin && !this.isPartyGameLost) {
+            this.isPartyGameWin = false
+            this.loadInterScene(true)
         }
 
         // Player Win & and Game
-        else if (this.isPartyGame && this.gameLevel[this.indexGameLevel].isWin) {
+        else if (this.isPartyGame && this.currentGame.isWin) {
             this.isPartyGame = false
-            this.chono.style.display = 'none'
-            this.loadInterScene()
+            this.clearChrono()
+            setTimeout(() => this.loadInterScene(true), 750)
         }
 
         // Outro Scene is finished

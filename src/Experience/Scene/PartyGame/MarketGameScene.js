@@ -23,13 +23,11 @@ export default class MarketGameScene extends FXScene {
 
         this.products = []
 
-        this.resources.on('ready', () => {
             this._initBackground()
 
             this._initCart();
 
             this.startGame()
-        })
     }
 
     _initBackground() {
