@@ -7,12 +7,11 @@ export default class BurgerGameScene extends FXScene {
         super()
         this.resources = this.experience.resources
 
-        this.difficultyGameLevel = this.experience.difficultyGameLevel
-
         this.geometryPlane = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
     }
 
     load() {
+        this.difficultyGameLevel = this.experience.difficultyGameLevel
         this.setWinCondition()
         const colorTexture = this.resources.items[`burgerGame${this.difficultyGameLevel}Background`]
         colorTexture.generateMipmaps = false

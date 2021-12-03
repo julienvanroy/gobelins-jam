@@ -12,7 +12,6 @@ export default class LightGameScene extends FXScene {
     constructor() {
         super();
         this.resources = this.experience.resources;
-        this.difficultyGameLevel = this.experience.difficultyGameLevel
         this.materialLightOn = new MeshBasicMaterial({
             color: 0xffb870,
         });
@@ -24,6 +23,7 @@ export default class LightGameScene extends FXScene {
     }
 
     load(){
+        this.difficultyGameLevel = this.experience.difficultyGameLevel
         this.isWin = false
         this.experience.renderer.instance.setClearColor('#1d1e82')
         this._initBackground()

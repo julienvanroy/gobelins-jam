@@ -57,6 +57,14 @@ export default class GameManager {
         }
     }
 
+    changeDifficulty(){
+        if(this.numberWinRound <= 3) {
+            this.experience.difficultyGameLevel = 1
+        }else if(this.numberWinRound <= 6) {
+            this.experience.difficultyGameLevel = 2
+        }else this.experience.difficultyGameLevel = 3
+    }
+
     clearChrono() {
         clearInterval(this.timerInterval)
     }
@@ -73,6 +81,7 @@ export default class GameManager {
     }
 
     loadPartyGame() {
+        this.changeDifficulty()
         this.isPartyGame = true
         this.currentGame = this.gameLevel[this.indexGameLevel]
         this.currentGame.destroy()
