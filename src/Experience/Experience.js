@@ -44,8 +44,7 @@ export default class Experience {
         this.renderer = new Renderer()
         this.resources.on('ready', () => {
             this._initScenes()
-            this.transitionScene = new TransitionScene(this.lightGameScene)
-            this.lightGameScene.load()
+            this.transitionScene = new TransitionScene(this.blackScene)
             this.gameManager = new GameManager()
             this.overlay = new Overlay()
 

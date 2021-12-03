@@ -23,7 +23,7 @@ export default class LightGameScene extends FXScene {
     }
 
     load(){
-        this.difficultyGameLevel = 3
+        this.difficultyGameLevel = this.experience.difficultyGameLevel
         this.isWin = false
         this.experience.renderer.instance.setClearColor('#1d1e82')
         this._initBackground()
@@ -78,6 +78,7 @@ export default class LightGameScene extends FXScene {
                 // retire la lettre des touches à presser
                 this._turnOnLight(keyCode);
                 var index = this.toPressCodes.indexOf(keyCode)
+                this._turnOffLetter(keyCode)
                 this.toPressCodes[index] = '/'
                 if (this.toPressCodes.every(item => item === '/')) {
                     this.isWin = true
@@ -279,6 +280,11 @@ export default class LightGameScene extends FXScene {
         this.light13 = new Mesh(smallLight, this.materialLightOff);
         this.light13.position.set(-0.165, -0.136, -0.1);
         this.group.add(this.light13);
+    }
+
+    _turnOffLetter(index) {
+        console.log('turnOffLetter', this.textsKey[index])
+        this.textsKey[index].text = '';
     }
 
     _turnOnLight(keyPressed) {
