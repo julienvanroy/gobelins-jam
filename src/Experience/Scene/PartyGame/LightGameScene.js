@@ -160,7 +160,6 @@ export default class LightGameScene extends FXScene {
 
         if (this.difficultyGameLevel === 3) {
             this.toPressCodes.forEach((key, index) => {
-                console.log(String.fromCharCode(key))
                 this.textsKey[key] = new Text();
                 this.textsKey[key].text = String.fromCharCode(key);
                 // myText.position.set(0, 0, 1.2);
@@ -283,7 +282,6 @@ export default class LightGameScene extends FXScene {
     }
 
     _turnOffLetter(index) {
-        console.log('turnOffLetter', this.textsKey[index])
         this.textsKey[index].text = '';
     }
 

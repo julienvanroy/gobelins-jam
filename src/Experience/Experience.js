@@ -65,7 +65,6 @@ export default class Experience {
     }
 
     _initScenes() {
-        this.worldScene = new WorldScene()
         this.blackScene = new BlackScene()
         this.videoScene = new VideoScene()
         this._initScenePartyGame()

@@ -36,6 +36,7 @@ export default class GameManager {
         this.numberWinRound = 0
 
         this.indexGameLevel = 0
+        this.indexCurrentGame = this.indexGameLevel
 
         this.secondsLeft = 6
         this.timerInterval = null
@@ -53,7 +54,10 @@ export default class GameManager {
         if (this.secondsLeft === 0) {
             this.clearChrono()
             this.isPartyGame = false
-            this.isPartyGameLost = true
+            if(this.indexCurrentGame === 2) {
+                if(this.currentGame.isLost) this.isPartyGameLost = true
+                else this.isPartyGameWin = true
+            } else this.isPartyGameLost = true
         }
     }
 
@@ -76,7 +80,8 @@ export default class GameManager {
         this.textGame.textContent = ''
 
         this.isInterScene = true
-        this.video.setSrc(`interScene/${this.numberWinRound}/${isWin ? 'win.mp4' : 'loose.mp4'}`)
+        if(this.numberWinRound === 0) this.video.setSrc('interScene/start.mp4')
+        else this.video.setSrc(`interScene/${this.numberWinRound}/${isWin ? 'win.mp4' : 'loose.mp4'}`)
         this.transitionScene.transition(this.videoScene)
     }
 
@@ -89,6 +94,7 @@ export default class GameManager {
         this.transitionScene.transition(this.currentGame)
         this.textGame.textContent = this.textGameLevel[this.indexGameLevel]
         this.setupChrono()
+        this.indexCurrentGame = this.indexGameLevel
         this.indexGameLevel++
         this.indexGameLevel = this.indexGameLevel >= this.gameLevel.length ? 0 : this.indexGameLevel
     }
@@ -97,10 +103,7 @@ export default class GameManager {
         // Intro Scene is finished
         if (this.isIntroScene && this.video.instance.ended) {
             this.isIntroScene = false
-            this.isInterScene = true
-            this.video.setSrc('interScene/start.mp4')
-            this.transitionScene.transition(this.videoScene)
-            this.numberWinRound++
+            this.loadInterScene(false)
         }
 
         // if inter scene finished
@@ -136,7 +139,7 @@ export default class GameManager {
         // Outro Scene is finished
         else if (this.isOutroScene && this.video.instance.ended) {
             this.isOutroScene = false
-            this.transitionScene.transition(this.blackScene)
+            this.replayBtn.style.display = 'block'
         }
     }
 }
