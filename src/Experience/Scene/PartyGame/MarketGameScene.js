@@ -26,10 +26,32 @@ export default class MarketGameScene extends FXScene {
         this._initBackground()
 
         this._initCart();
+    }
 
+    difficultyLevel() {
+        this.difficultyGameLevel = this.experience.difficultyGameLevel
+
+        switch (this.difficultyGameLevel) {
+            case 1:
+                this.speed = 0.01
+                this.timeInterval = 500
+                break;
+            case 2:
+                this.speed = 0.025
+                this.timeInterval = 300
+                break;
+            case 3:
+                this.speed = 0.05
+                this.timeInterval = 200
+                break;
+            default:
+                return;
+        }
     }
 
     load() {
+        this.isLost = false
+        this.difficultyLevel()
         this.startGame()
     }
 
@@ -84,7 +106,7 @@ export default class MarketGameScene extends FXScene {
     }
 
     startGame() {
-        this.idInterval = setInterval(() => this._createProduct(), 500)
+        this.idInterval = setInterval(() => this._createProduct(), this.timeInterval)
     }
 
     _detectCollisionObject(object) {
@@ -122,7 +144,10 @@ export default class MarketGameScene extends FXScene {
             } else this.cart.position.x = this.positionMouseMesh.x;
             this.products.map(product => {
                 this._detectCollisionObject(product)
-                product.position.y -= 0.01
+                product.position.y -= this.speed
+                if(product.position.y <= -this.limitScreen.y) {
+                    this.isLost = true
+                }
             })
         }
     }
@@ -149,6 +174,7 @@ export default class MarketGameScene extends FXScene {
     }
 
     destroy() {
+        this.stopGame()
         for (let i = this.products.length - 1; i >= 0; i--) {
             this.destroyMesh(this.products[i])
         }
