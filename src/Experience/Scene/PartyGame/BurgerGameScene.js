@@ -9,6 +9,7 @@ export default class BurgerGameScene extends FXScene {
         super()
         this.resources = this.experience.resources
         this.synth = new Tone.PolySynth().toDestination();
+        this.synth.volume.value = 14
         this.geometryPlane = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
     }
 
