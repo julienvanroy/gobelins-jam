@@ -61,19 +61,7 @@ export default class BurgerGameScene extends FXScene {
                 if(this.isWin) {
                     gsap.to(mesh.position, {
                         y: 0,
-                        duration: 0.25,
-                        onComplete: () => {
-                            if (this.isWin) {
-                                setTimeout(() => {
-                                    this.destroy()
-                                    this.difficultyGameLevel+=1
-                                }, 1000)
-
-                                setTimeout(() => {
-                                    this.load()
-                                }, 2000)
-                            }
-                        }
+                        duration: 0.25
                     })
                 } else {
                     gsap.to(mesh.position, {

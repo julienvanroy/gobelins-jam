@@ -13,7 +13,6 @@ import GameManager from "./GameManager";
 import BurgerGameScene from "./Scene/PartyGame/BurgerGameScene";
 import LightGameScene from "./Scene/PartyGame/LightGameScene";
 import MarketGameScene from "./Scene/PartyGame/MarketGameScene";
-import {Vector3} from "three";
 import Mouse from "./Utils/Mouse";
 import Resources from "./Utils/Resources";
 import sources from "./sources";
@@ -44,11 +43,11 @@ export default class Experience {
         this.camera = new Camera()
         this.renderer = new Renderer()
         this._initScenes()
-        this.transitionScene = new TransitionScene(this.marketGameScene)
+        this.transitionScene = new TransitionScene(this.blackScene)
         this.gameManager = new GameManager()
         this.overlay = new Overlay()
 
-        if(this.transitionScene.currentScene == this.lightGameScene){
+        if(this.transitionScene.currentScene === this.lightGameScene){
             this.renderer.instance.setClearColor('#1d1e82')
         }
 
@@ -82,7 +81,7 @@ export default class Experience {
         this.lightGameScene = new LightGameScene()
         this.marketGameScene = new MarketGameScene()
 
-        this.gameLevel = [this.burgerGameScene]
+        this.gameLevel = [this.burgerGameScene, this.lightGameScene, this.marketGameScene]
     }
 
     resize() {
