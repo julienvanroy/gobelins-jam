@@ -88,7 +88,9 @@ export default class GameManager {
         // Intro Scene is finished
         if (this.isIntroScene && this.video.instance.ended) {
             this.isIntroScene = false
-            this.loadPartyGame()
+            this.isInterScene = true
+            this.video.setSrc('interScene/start.mp4')
+            this.transitionScene.transition(this.videoScene)
             this.numberWinRound++
         }
 

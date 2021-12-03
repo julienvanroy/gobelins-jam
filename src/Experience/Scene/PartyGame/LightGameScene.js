@@ -33,7 +33,7 @@ export default class LightGameScene extends FXScene {
 
     _initBackground()
     {
-        const geometry = new PlaneBufferGeometry(1, 1);
+        const geometry = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
         const colorTexture =
             this.resources.items[`lightGame${this.difficultyGameLevel}Background`];
         colorTexture.generateMipmaps = false;
@@ -43,12 +43,10 @@ export default class LightGameScene extends FXScene {
             transparent: true,
         });
         this.background = new Mesh(geometry, material);
-        this.background.position.z = 1;
+        this.scene.add(this.background)
     }
 
     _initTirage() {
-        console.log("initTirage");
-
         switch (this.difficultyGameLevel) {
             case 1:
                 this.nWindows = 3;
@@ -72,24 +70,15 @@ export default class LightGameScene extends FXScene {
         this.textsKey = [];
         this._initMesh();
 
-        console.log('touches', this.toPressCodes);
-        this.toPressCodes.forEach((key) => {
-            console.log(String.fromCharCode(key));
-            console.log(key);
-        });
-
         document.addEventListener("keydown", onDocumentKeyDown.bind(this), false);
 
         function onDocumentKeyDown(event) {
             var keyCode = event.which;
-            console.log('1', keyCode)
-            console.log('2', this.toPressCodes)
             if (this.toPressCodes.includes(keyCode)) {
                 // retire la lettre des touches à presser
                 this._turnOnLight(keyCode);
                 var index = this.toPressCodes.indexOf(keyCode)
                 this.toPressCodes[index] = '/'
-                console.log('tableau', this.toPressCodes)
                 if (this.toPressCodes.every(item => item === '/')) {
                     this.isWin = true
                 }
@@ -100,9 +89,6 @@ export default class LightGameScene extends FXScene {
     }
 
     _initMesh() {
-        console.log("initMesh");
-        console.log("topress", String.fromCharCode(this.toPressCodes));
-
         this.groupText = new Group();
 
         if (this.difficultyGameLevel === 1) {
@@ -305,7 +291,6 @@ export default class LightGameScene extends FXScene {
             if (this.toPressCodes.includes(keyPressed)) {
                 switch (this.toPressCodes.indexOf(keyPressed)) {
                     case 0:
-                        console.log('premiere lettre pressed')
                         this.light1.material = this.materialLightOn
                         break;
                     case 1:
@@ -324,7 +309,6 @@ export default class LightGameScene extends FXScene {
             if (this.toPressCodes.includes(keyPressed)) {
                 switch (this.toPressCodes.indexOf(keyPressed)) {
                     case 0:
-                        console.log('premiere lettre pressed')
                         this.light4.material = this.materialLightOn
                         break;
                     case 1:
@@ -349,7 +333,6 @@ export default class LightGameScene extends FXScene {
             if (this.toPressCodes.includes(keyPressed)) {
                 switch (this.toPressCodes.indexOf(keyPressed)) {
                     case 0:
-                        console.log('premiere lettre pressed')
                         this.light1.material = this.materialLightOn
                         break;
                     case 1:
@@ -383,7 +366,6 @@ export default class LightGameScene extends FXScene {
 
     _initGroup() {
         this.group = new Group();
-        this.group.add(this.background);
         this._initLightOff();
         this.group.scale.set(
             this.camera.widthVisible,
@@ -391,5 +373,11 @@ export default class LightGameScene extends FXScene {
             1
         );
         this.scene.add(this.group);
+    }
+
+    destroy() {
+        super.destroy();
+        if (this.group) this.scene.remove(this.group)
+        if (this.groupText) this.scene.remove(this.groupText)
     }
 }
