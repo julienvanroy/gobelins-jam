@@ -48,6 +48,9 @@ export default class Experience {
         this.gameManager = new GameManager()
         this.overlay = new Overlay()
 
+        if(this.transitionScene.currentScene == this.lightGameScene){
+            this.renderer.instance.setClearColor('#1d1e82')
+        }
 
         // Resize event
         this.sizes.on('resize', () => {
@@ -75,6 +78,7 @@ export default class Experience {
         this.difficultyGameLevel = 1
 
         this.burgerGameScene = new BurgerGameScene()
+        this.marketGameScene = new MarketGameScene()
         this.lightGameScene = new LightGameScene()
         this.marketGameScene = new MarketGameScene()
 
