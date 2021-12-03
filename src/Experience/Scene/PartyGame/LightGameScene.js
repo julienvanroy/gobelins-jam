@@ -1,5 +1,4 @@
 import FXScene from "../Core/FXScene";
-import {AxesHelper} from "three/src/helpers/AxesHelper";
 import {
     Mesh,
     MeshBasicMaterial,
@@ -25,6 +24,7 @@ export default class LightGameScene extends FXScene {
     }
 
     load(){
+        this.experience.renderer.instance.setClearColor('#1d1e82')
         this._initBackground()
         this._initGroup();
         this._initTirage();
@@ -49,13 +49,13 @@ export default class LightGameScene extends FXScene {
         console.log("initTirage");
 
         switch (this.difficultyGameLevel) {
-            case '1':
+            case 1:
                 this.nWindows = 3;
                 break;
-            case '2':
+            case 2:
                 this.nWindows = 5;
                 break;
-            case '3':
+            case 3:
                 this.nWindows = 8;
                 break;
             default:
@@ -104,7 +104,7 @@ export default class LightGameScene extends FXScene {
 
         this.groupText = new Group();
 
-        if (this.difficultyGameLevel === '1') {
+        if (this.difficultyGameLevel === 1) {
             this.toPressCodes.forEach((key, index) => {
                 this.textsKey[key] = new Text();
                 this.textsKey[key].text = String.fromCharCode(key);
@@ -134,7 +134,7 @@ export default class LightGameScene extends FXScene {
             });
         }
 
-        if (this.difficultyGameLevel === '2') {
+        if (this.difficultyGameLevel === 2) {
             this.toPressCodes.forEach((key, index) => {
                 this.textsKey[key] = new Text();
                 this.textsKey[key].text = String.fromCharCode(key);
@@ -172,7 +172,7 @@ export default class LightGameScene extends FXScene {
             });
         }
 
-        if (this.difficultyGameLevel === '3') {
+        if (this.difficultyGameLevel === 3) {
             this.toPressCodes.forEach((key, index) => {
                 this.textsKey[key] = new Text();
                 this.textsKey[key].text = String.fromCharCode(key);
@@ -300,7 +300,7 @@ export default class LightGameScene extends FXScene {
     }
 
     _turnOnLight(keyPressed) {
-        if (this.difficultyGameLevel == '1') {
+        if (this.difficultyGameLevel === 1) {
             if (this.toPressCodes.includes(keyPressed)) {
                 switch (this.toPressCodes.indexOf(keyPressed)) {
                     case 0:
@@ -319,7 +319,7 @@ export default class LightGameScene extends FXScene {
                 }
             }
         }
-        if (this.difficultyGameLevel == '2') {
+        if (this.difficultyGameLevel === 2) {
             if (this.toPressCodes.includes(keyPressed)) {
                 switch (this.toPressCodes.indexOf(keyPressed)) {
                     case 0:
@@ -344,7 +344,7 @@ export default class LightGameScene extends FXScene {
                 }
             }
         }
-        if (this.difficultyGameLevel == '3') {
+        if (this.difficultyGameLevel === 3) {
             if (this.toPressCodes.includes(keyPressed)) {
                 switch (this.toPressCodes.indexOf(keyPressed)) {
                     case 0:

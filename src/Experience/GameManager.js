@@ -13,7 +13,7 @@ export default class GameManager {
 
         this.currentGame = this.gameLevel[this.indexGameLevel]
 
-        this.textGameLevel = ["Mange le plus de viande possible !", "Allume les lumières que les idiots ont éteintes !", "Fais des achats compulsifs !"]
+        this.textGameLevel = ["Appuie sur espace pour manger le plus de viande !", "Allume les lumières que les idiots ont éteintes !", "Fais des achats compulsifs en bougeant le caddie!"]
 
         this.replayBtn = document.getElementById('replayBtn')
         this.textGame = document.getElementById('textGame')
