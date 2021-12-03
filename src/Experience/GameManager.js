@@ -103,6 +103,7 @@ export default class GameManager {
             this.numberWinRound++
         }
 
+        // if inter scene finished
         else if (this.isInterScene && this.video.instance.ended) {
             this.isInterScene = false
             if(this.numberWinRound >= this.winRoundCondition) {
