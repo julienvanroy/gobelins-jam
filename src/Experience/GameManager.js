@@ -94,7 +94,14 @@ export default class GameManager {
 
         else if (this.isInterScene && this.video.instance.ended) {
             this.isInterScene = false
-            this.loadPartyGame()
+            if(this.numberWinRound >= this.winRoundCondition) {
+                this.isPartyGame = false
+                this.isOutroScene = true
+                this.video.setSrc('outro.mp4')
+                this.transitionScene.transition(this.videoScene)
+            } else {
+                this.loadPartyGame()
+            }
         }
 
         else if (!this.isPartyGame && !this.isPartyGameWin && this.isPartyGameLost) {
