@@ -6,18 +6,31 @@ export default class Overlay {
         this.video = this.experience.video
         this.transitionScene = this.experience.transitionScene
         this.gameManager = this.experience.gameManager
+        this.replayBtn = this.gameManager.replayBtn
         this.videoScene = this.experience.videoScene
-        this.element = document.getElementById('overlay')
+        this.overlay = document.getElementById('overlay')
+        this.overlayBtn = document.getElementById('overlayBtn')
 
-        this.element.addEventListener('click', this.hide.bind(this))
+        this.overlayBtn.addEventListener('click', this.hideOverlay.bind(this))
+        this.replayBtn.addEventListener('click', this.replayGame.bind(this))
     }
 
-    show() {
-        this.element.style.display = 'block'
+    hideOverlay() {
+        this.overlay.remove()
+        this.overlayBtn.removeEventListener('click', this.hideOverlay.bind(this))
+        this.overlay = null
+        this.overlayBtn = null
+
+        this.playIntro()
     }
 
-    hide() {
-        this.element.style.display = 'none'
+    replayGame() {
+        this.replayBtn.style.display = 'none'
+
+        this.playIntro()
+    }
+
+    playIntro() {
         this.video.setSrc('intro.mp4')
         this.video.instance.play()
         this.transitionScene.transition(this.videoScene)
@@ -25,6 +38,7 @@ export default class Overlay {
     }
 
     destroy() {
-        this.element.removeEventListener('click', this.hide.bind(this))
+        this.overlayBtn.removeEventListener('click', this.hideOverlay.bind(this))
+        this.replayBtn.removeEventListener('click', this.replayGame.bind(this))
     }
 }

@@ -1,39 +1,89 @@
-*
-{
+@font-face {
+    font-family: "Fredoka";
+    src: url("../static/fonts/Fredoka.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "DejaVu";
+    src: url("../static/fonts/DejaVu.ttf") format("truetype");
+}
+
+* {
     margin: 0;
     padding: 0;
 }
 
 html,
-body
-{
+body {
+    font-family: DejaVu;
     overflow: hidden;
 }
 
-.webgl
-{
+.webgl {
     outline: none;
 }
 
 #overlay {
-    /* TODO : delete this */
-    display: none;
-    /* end Todo */
     position: fixed;
     inset: 0;
-    background: black;
+    background: url("../static/img/overlay/background.png") no-repeat center;
+    background-size: cover;
     width: 100vw;
     height: 100vh;
     z-index: 10;
-    cursor: pointer;
     text-align: center;
 }
 
-#overlay h1{
+#overlay img {
+    margin-top: 4rem;
+}
+
+#overlay h1 {
+    font-family: Fredoka;
+    font-size: 111px;
+    color: #5FB3FF;
+    font-weight: normal;
+}
+
+#overlay p {
+    font-weight: bold;
+    font-size: 38px;
+    text-align: center;
+    color: #3C3DAA;
+    margin-top: 1rem;
+    text-transform: uppercase;
+}
+
+button {
     position: absolute;
-    display: block;
-    inset: 50% 0 auto;
-    transform: translateY(-50%);
-    margin: auto;
+    bottom: 4rem;
+    left: 0;
+    right: 0;
+    width: 310px;
+    height: 70px;
+    margin: 0 auto;
+    border: none;
+    outline: none;
     color: white;
+    background: #F0734F;
+    border-radius: 50px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 38px;
+    text-transform: uppercase;
+    transition: background 0.3s ease-out;
+}
+
+button:hover, button:focus, button:active {
+    cursor: pointer;
+    background: #F9B49F;
+}
+
+#replayBtn {
+    z-index: 10;
+    background: #F0734F;
+}
+
+#replayBtn:hover {
+    background: #3C3DAA;
 }

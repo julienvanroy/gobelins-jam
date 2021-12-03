@@ -4,11 +4,18 @@ export default class GameManager {
     constructor() {
         this.experience = new Experience()
         this.video = this.experience.video
+        this.overlay = this.experience.overlay
         this.transitionScene = this.experience.transitionScene
         this.blackScene = this.experience.blackScene
         this.videoScene = this.experience.videoScene
         this.gameLevel = this.experience.gameLevel
 
+        this.replayBtn = document.getElementById('replayBtn')
+
+        this.reset()
+    }
+
+    reset() {
         this.isIntroScene = false
         this.isPartyGame = false
         this.isOutroScene = false
