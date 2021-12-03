@@ -1,13 +1,14 @@
 import FXScene from "../Core/FXScene";
 import {Mesh, MeshBasicMaterial, PlaneBufferGeometry, NearestFilter} from "three";
 import {gsap} from "gsap";
+import * as Tone from "tone";
 
 
 export default class BurgerGameScene extends FXScene {
     constructor() {
         super()
         this.resources = this.experience.resources
-        this.synth = this.experience.synth
+        this.synth = new Tone.PolySynth().toDestination();
         this.geometryPlane = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
     }
 
@@ -170,59 +171,6 @@ export default class BurgerGameScene extends FXScene {
             default:
                 break;
         }
-        // switch (this.counterWinCondition) {
-        //     case 1:
-        //         let pitch = new Tone.PitchShift(1).toDestination()
-        //         let synth = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch);
-        //         synth.autostart = true;
-        //         break;
-
-        //     case 2:
-        //         let pitch2 = new Tone.PitchShift(3).toDestination()
-        //         let synth2 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch2);
-        //         synth2.autostart = true;
-        //         break;
-
-        //     case 3:
-        //         let pitch3 = new Tone.PitchShift(5).toDestination()
-        //         let synth3 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch3);
-        //         synth3.autostart = true;
-        //         break;
-
-        //     case 4:
-        //         let pitch4 = new Tone.PitchShift(7).toDestination()
-        //         let synth4 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch4);
-        //         synth4.autostart = true;
-        //         break;
-
-        //     case 5:
-        //         let pitch5 = new Tone.PitchShift(9).toDestination()
-        //         let synth5 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch5);
-        //         synth5.autostart = true;
-        //         break;
-        //     case 6:
-        //         let pitch6 = new Tone.PitchShift(11).toDestination()
-        //         let synth6 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch6);
-        //         synth6.autostart = true;
-        //         break;
-        //     case 7:
-        //         let pitch7 = new Tone.PitchShift(13).toDestination()
-        //         let synth7 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch7);
-        //         synth7.autostart = true;
-        //         break;
-        //     case 8:
-        //         let pitch8 = new Tone.PitchShift(15).toDestination()
-        //         let synth8 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch8);
-        //         synth8.autostart = true;
-        //         break;
-        //     case 9:
-        //         let pitch9 = new Tone.PitchShift(17).toDestination()
-        //         let synth9 = new Tone.Player("/mp3/swipe.mp3").toDestination().connect(pitch9);
-        //         synth9.autostart = true;
-        //         break;
-        //     default:
-        //         break;
-        // }
     }
 
 
