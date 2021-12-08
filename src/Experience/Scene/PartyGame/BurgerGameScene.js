@@ -20,7 +20,7 @@ export default class BurgerGameScene extends FXScene {
         const material = new MeshBasicMaterial({map: colorTexture});
         const mesh = new Mesh(this.geometryPlane, material)
         this.scene.add(mesh)
-        window.addEventListener("keydown", this._listener.bind(this), true);
+        window.addEventListener("keyup", this._listener.bind(this), true);
     }
 
     setWinCondition() {
@@ -173,6 +173,6 @@ export default class BurgerGameScene extends FXScene {
 
     destroy() {
         super.destroy()
-        window.removeEventListener("keydown", this._listener.bind(this), true);
+        window.removeEventListener("keyup", this._listener.bind(this), true);
     }
 }
