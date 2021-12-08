@@ -88,8 +88,9 @@ export default class MarketGameScene extends FXScene {
 
         this.geometryProduct = new PlaneGeometry(0.4, 0.4);
 
-        for( let i = 0; i < this.maxProduct; i++ ){
-            const material = new MeshBasicMaterial({map: this.resources.items[`marketGameProduct${i}`], transparent: true})
+        for( let i = this.minProduct; i <= this.maxProduct; i++ ){
+            const map = this.resources.items[`marketGameProduct${i}`]
+            const material = new MeshBasicMaterial({map: map, transparent: true})
             this.products.push( new Mesh( this.geometryProduct, material ) );
         }
     }
