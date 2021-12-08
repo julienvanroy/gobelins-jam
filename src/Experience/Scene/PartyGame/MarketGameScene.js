@@ -18,13 +18,14 @@ export default class MarketGameScene extends FXScene {
 
         this.idInterval = null
 
-        this.geometryProduct = new PlaneGeometry(0.4, 0.4);
-
-        this.products = []
+        this.minProduct = Math.ceil(1);
+        this.maxProduct = Math.floor(12);
 
         this._initBackground()
 
         this._initCart();
+
+        this._initProducts()
     }
 
     difficultyLevel() {
@@ -57,47 +58,58 @@ export default class MarketGameScene extends FXScene {
     _initBackground() {
         const geometry = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
 
-        const colorTexture = this.resources.items.marketGameBackground
+        const mapBgTexture = this.resources.items.marketGameBackground
 
-        const materialBg = new MeshBasicMaterial({map: colorTexture, transparent: true});
-        const background = new Mesh(geometry, materialBg)
-        this.scene.add(background)
+        const materialBg = new MeshBasicMaterial({map: mapBgTexture, transparent: true});
+        const meshBg = new Mesh(geometry, materialBg)
+        this.scene.add(meshBg)
 
-        const screenTexture = this.resources.items.marketGameScreen
+        const mapScreenTexture = this.resources.items.marketGameScreen
 
-        const materialScreen = new MeshBasicMaterial({map: screenTexture, transparent: true});
-        const screen = new Mesh(geometry, materialScreen)
-        screen.position.z = -0.02
-        this.scene.add(screen)
+        const materialScreen = new MeshBasicMaterial({map: mapScreenTexture});
+        const meshScreen = new Mesh(geometry, materialScreen)
+        meshScreen.position.z = -0.02
+        this.scene.add(meshScreen)
     }
 
     _initCart() {
         const geometry = new PlaneBufferGeometry(0.5, 0.5);
-        const colorTexture = this.resources.items.marketGameCart
-        const material = new MeshBasicMaterial({map: colorTexture, transparent: true});
+        const mapTexture = this.resources.items.marketGameCart
+        const material = new MeshBasicMaterial({map: mapTexture, transparent: true});
 
         this.cart = new Mesh(geometry, material);
         this.cart.position.y = -0.27;
         this.scene.add(this.cart);
     }
 
-    _createProduct() {
-        const min = Math.ceil(1);
-        const max = Math.floor(12);
-        const random = Math.floor(Math.random() * (max - min)) + min;
-        const texture = this.resources.items[`marketGameProduct${random}`]
-        const material = new MeshBasicMaterial({map: texture, transparent: true});
-        const product = new Mesh(this.geometryProduct, material);
+    _initProducts() {
+        this.products = []
+        this.productsGame = []
+
+        this.geometryProduct = new PlaneGeometry(0.4, 0.4);
+
+        for( let i = 0; i < this.maxProduct; i++ ){
+            const material = new MeshBasicMaterial({map: this.resources.items[`marketGameProduct${i}`], transparent: true})
+            this.products.push( new Mesh( this.geometryProduct, material ) );
+        }
+    }
+
+    addProduct() {
+        if(this.isAddProduct) return;
+        this.isAddProduct = true
+        const random = Math.floor(Math.random() * (this.maxProduct - this.minProduct)) + this.minProduct;
+        const product = this.products[random].clone()
         product.position.x = Math.random() * (this.limitScreen.x - (-this.limitScreen.x)) - this.limitScreen.x;
         product.position.y = this.limitScreen.y
         product.position.z = -0.01
 
-        this.products.push(product)
+        this.productsGame.push(product)
         this.scene.add(product);
+        this.isAddProduct = false
     }
 
     startGame() {
-        this.idInterval = setInterval(() => this._createProduct(), this.timeInterval)
+        this.idInterval = setInterval(() => this.addProduct(), this.timeInterval)
     }
 
     _detectCollisionObject(object) {
@@ -133,7 +145,7 @@ export default class MarketGameScene extends FXScene {
             } else if (this.positionMouseMesh.x <= -this.limitScreen.x) {
                 this.cart.position.x = -this.limitScreen.x;
             } else this.cart.position.x = this.positionMouseMesh.x;
-            this.products.map(product => {
+            this.productsGame.map(product => {
                 this._detectCollisionObject(product)
                 product.position.y -= this.speed
                 if(product.position.y <= -this.limitScreen.y) {
@@ -161,13 +173,12 @@ export default class MarketGameScene extends FXScene {
 
     stopGame() {
         clearInterval(this.idInterval)
-        this.idInterval = null
     }
 
     destroy() {
         this.stopGame()
-        for (let i = this.products.length - 1; i >= 0; i--) {
-            this.destroyMesh(this.products[i])
+        for (let i = this.productsGame.length - 1; i >= 0; i--) {
+            this.destroyMesh(this.productsGame[i])
         }
     }
 }
