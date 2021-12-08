@@ -1,11 +1,5 @@
 import FXScene from "../Core/FXScene";
-import {
-    Mesh,
-    MeshBasicMaterial,
-    NearestFilter,
-    PlaneBufferGeometry,
-    Group,
-} from "three";
+import {Group, Mesh, MeshBasicMaterial, PlaneBufferGeometry,} from "three";
 import {Text} from "troika-three-text";
 import * as Tone from 'tone'
 
@@ -13,41 +7,60 @@ export default class LightGameScene extends FXScene {
     constructor() {
         super();
         this.resources = this.experience.resources;
-        this.materialLightOn = new MeshBasicMaterial({
-            color: 0xffb870,
-        });
-        this.materialLightOff = new MeshBasicMaterial({
+
+        this.player = new Tone.Player("/mp3/interrupteur.mp3").toDestination();
+        this.player.volume.value = 14;
+
+        this.materialLight = new MeshBasicMaterial({
             color: 0xffb870,
             transparent: true,
             opacity: 0,
         });
 
-        this.player = new Tone.Player("/mp3/interrupteur.mp3").toDestination();
-        this.player.volume.value = 14;
+        this.difficultyGameLevel = this.experience.difficultyGameLevel
 
+        this._initBackground()
+        this._initLight();
     }
 
-    load(){
+    load() {
         this.difficultyGameLevel = this.experience.difficultyGameLevel
         this.isWin = false
         this.experience.renderer.instance.setClearColor('#1d1e82')
-        this._initBackground()
-        this._initGroup();
+        //Update Background
+        this.materialBg.map = this.resources.items[`lightGame${this.difficultyGameLevel}Background`]
+        this.background.material.needsUpdate = true
         this._initTirage();
+        document.addEventListener("keydown", this._onDocumentKeyDown.bind(this), false);
     }
 
-    _initBackground()
-    {
+    _onDocumentKeyDown(event) {
+        const keyCode = event.which;
+        if (this.toPressCodes.includes(keyCode)) {
+            // retire la lettre des touches à presser
+            this._turnOnLight(keyCode);
+            this.player.start()
+            this.player.stop("+0.5")
+            const index = this.toPressCodes.indexOf(keyCode)
+            this._turnOffLetter(keyCode)
+            this.toPressCodes[index] = '/'
+            if (this.toPressCodes.every(item => item === '/')) {
+                this.isWin = true
+            }
+        }
+    }
+
+    _initBackground() {
         const geometry = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
-        const colorTexture =
-            this.resources.items[`lightGame${this.difficultyGameLevel}Background`];
-        colorTexture.generateMipmaps = false;
-        colorTexture.minFilter = NearestFilter;
-        const material = new MeshBasicMaterial({
-            map: colorTexture,
+
+        const map = this.resources.items[`lightGame${this.difficultyGameLevel}Background`];
+
+        this.materialBg = new MeshBasicMaterial({
+            map: map,
             transparent: true,
         });
-        this.background = new Mesh(geometry, material);
+
+        this.background = new Mesh(geometry, this.materialBg);
         this.scene.add(this.background)
     }
 
@@ -73,28 +86,10 @@ export default class LightGameScene extends FXScene {
 
         this.toPressCodes = mixedCodes.slice(0, this.nWindows);
         this.textsKey = [];
-        this._initMesh();
-
-        document.addEventListener("keydown", onDocumentKeyDown.bind(this), false);
-
-        function onDocumentKeyDown(event) {
-            var keyCode = event.which;
-            if (this.toPressCodes.includes(keyCode)) {
-                // retire la lettre des touches à presser
-                this._turnOnLight(keyCode);
-                this.player.start()
-                this.player.stop("+0.5")
-                var index = this.toPressCodes.indexOf(keyCode)
-                this._turnOffLetter(keyCode)
-                this.toPressCodes[index] = '/'
-                if (this.toPressCodes.every(item => item === '/')) {
-                    this.isWin = true
-                }
-            }
-        }
+        this._initTextGroup();
     }
 
-    _initMesh() {
+    _initTextGroup() {
         this.groupText = new Group();
 
         if (this.difficultyGameLevel === 1) {
@@ -212,84 +207,92 @@ export default class LightGameScene extends FXScene {
         }
     }
 
-    _initLightOff() {
-        const materialLightOff = new MeshBasicMaterial({color: 0xffb870, transparent: true, opacity: 0});
-        this.materialLightOn = new MeshBasicMaterial({color: 0xffb870});
+
+    _turnOffLetter(index) {
+        this.textsKey[index].text = '';
+    }
+
+    _initLight() {
+        this.group = new Group();
+
         const geometry1 = new PlaneBufferGeometry(0.13, 0.09);
         const smallLight = new PlaneBufferGeometry(0.05, 0.09);
         const mediumLight = new PlaneBufferGeometry(0.09, 0.12);
         const miniLight = new PlaneBufferGeometry(0.028, 0.06);
 
         // * light 1 - batiment central, en haut
-        this.light1 = new Mesh(geometry1, this.materialLightOff);
+        this.light1 = new Mesh(geometry1, this.materialLight.clone());
         this.light1.position.set(-0.02, 0.09, -0.1);
         this.group.add(this.light1);
 
         // * light 2 - batiment central, en bas
-        this.light2 = new Mesh(geometry1, this.materialLightOff);
+        this.light2 = new Mesh(geometry1, this.materialLight.clone());
         this.light2.position.set(-0.02, -0.18, -0.1);
         this.group.add(this.light2);
 
         // * light 3 - batiment droite, en haut
-        this.light3 = new Mesh(smallLight, this.materialLightOff);
+        this.light3 = new Mesh(smallLight, this.materialLight.clone());
         this.light3.position.set(0.22, -0.08, -0.1);
         this.group.add(this.light3);
 
         // * light 4 - niv 2 - batiment central, au centre
-        this.light4 = new Mesh(geometry1, this.materialLightOff);
+        this.light4 = new Mesh(geometry1, this.materialLight.clone());
         this.light4.position.set(-0.02, -0.09, -0.1);
         this.group.add(this.light4);
 
         // * light 5 - niv 2 - 2e fenetre au dessus du store
-        this.light5 = new Mesh(smallLight, this.materialLightOff);
+        this.light5 = new Mesh(smallLight, this.materialLight.clone());
         this.light5.position.set(-0.28, -0.05, -0.1);
         this.group.add(this.light5);
 
         // * light 6 - niv 2 - store
-        this.light6 = new Mesh(mediumLight, this.materialLightOff);
+        this.light6 = new Mesh(mediumLight, this.materialLight.clone());
         this.light6.position.set(-0.26, -0.245, -0.1);
         this.group.add(this.light6);
 
         // * light 7 - niv 2 - batiement loin gauche
-        this.light7 = new Mesh(smallLight, this.materialLightOff);
+        this.light7 = new Mesh(smallLight, this.materialLight.clone());
         this.light7.position.set(-0.15, 0.19, -0.1);
         this.group.add(this.light7);
 
         // * light 8 - niv 2 - projecteur droite
-        this.light8 = new Mesh(mediumLight, this.materialLightOff);
+        this.light8 = new Mesh(mediumLight, this.materialLight.clone());
         this.light8.position.set(0.31, 0.22, -0.1);
         this.light8.rotation.set(0, 0, (Math.PI / 2) * 0.07);
         this.group.add(this.light8);
 
         // * light 9 - niv 3 - projecteur gauche
-        this.light9 = new Mesh(mediumLight, this.materialLightOff);
+        this.light9 = new Mesh(mediumLight, this.materialLight.clone());
         this.light9.position.set(-0.33, 0.25, -0.1);
         this.light9.rotation.set(0, 0, (Math.PI / 2) * 0.5);
         this.group.add(this.light9);
 
         // * light 10 - niv 3 - fenetre au dessus du store
-        this.light10 = new Mesh(smallLight, this.materialLightOff);
+        this.light10 = new Mesh(smallLight, this.materialLight.clone());
         this.light10.position.set(-0.274, -0.14, -0.1);
         this.group.add(this.light10);
 
         // * light 11 - niv 3 - fenetre loin en haut à gauche
-        this.light11 = new Mesh(miniLight, this.materialLightOff);
+        this.light11 = new Mesh(miniLight, this.materialLight.clone());
         this.light11.position.set(-0.234, 0.257, -0.1);
         this.group.add(this.light11);
 
         // * light 12 - niv 3 - fenetre loin en bas
-        this.light12 = new Mesh(miniLight, this.materialLightOff);
+        this.light12 = new Mesh(miniLight, this.materialLight.clone());
         this.light12.position.set(-0.234, 0.2, -0.1);
         this.group.add(this.light12);
 
         // * light 13 - niv 3 - fenetre analzon
-        this.light13 = new Mesh(smallLight, this.materialLightOff);
+        this.light13 = new Mesh(smallLight, this.materialLight.clone());
         this.light13.position.set(-0.165, -0.136, -0.1);
         this.group.add(this.light13);
-    }
 
-    _turnOffLetter(index) {
-        this.textsKey[index].text = '';
+        this.group.scale.set(
+            this.camera.widthVisible,
+            this.camera.heightVisible,
+            1
+        );
+        this.scene.add(this.group);
     }
 
     _turnOnLight(keyPressed) {
@@ -297,13 +300,13 @@ export default class LightGameScene extends FXScene {
             if (this.toPressCodes.includes(keyPressed)) {
                 switch (this.toPressCodes.indexOf(keyPressed)) {
                     case 0:
-                        this.light1.material = this.materialLightOn
+                        this._openLight(this.light1)
                         break;
                     case 1:
-                        this.light2.material = this.materialLightOn
+                        this._openLight(this.light2)
                         break;
                     case 2:
-                        this.light3.material = this.materialLightOn
+                        this._openLight(this.light3)
                         break;
 
                     default:
@@ -315,21 +318,20 @@ export default class LightGameScene extends FXScene {
             if (this.toPressCodes.includes(keyPressed)) {
                 switch (this.toPressCodes.indexOf(keyPressed)) {
                     case 0:
-                        this.light4.material = this.materialLightOn
+                        this._openLight(this.light4)
                         break;
                     case 1:
-                        this.light6.material = this.materialLightOn
+                        this._openLight(this.light6)
                         break;
                     case 2:
-                        this.light5.material = this.materialLightOn
+                        this._openLight(this.light5)
                         break;
                     case 3:
-                        this.light7.material = this.materialLightOn
+                        this._openLight(this.light7)
                         break;
                     case 4:
-                        this.light8.material = this.materialLightOn
+                        this._openLight(this.light8)
                         break;
-
                     default:
                         break;
                 }
@@ -339,25 +341,25 @@ export default class LightGameScene extends FXScene {
             if (this.toPressCodes.includes(keyPressed)) {
                 switch (this.toPressCodes.indexOf(keyPressed)) {
                     case 0:
-                        this.light1.material = this.materialLightOn
+                        this._openLight(this.light1)
                         break;
                     case 1:
-                        this.light6.material = this.materialLightOn
+                        this._openLight(this.light6)
                         break;
                     case 2:
-                        this.light10.material = this.materialLightOn
+                        this._openLight(this.light10)
                         break;
                     case 3:
-                        this.light11.material = this.materialLightOn
+                        this._openLight(this.light11)
                         break;
                     case 4:
-                        this.light12.material = this.materialLightOn
+                        this._openLight(this.light12)
                         break;
                     case 5:
-                        this.light9.material = this.materialLightOn
+                        this._openLight(this.light9)
                         break;
                     case 6:
-                        this.light3.material = this.materialLightOn
+                        this._openLight(this.light3)
                         break;
                     default:
                         break;
@@ -366,20 +368,16 @@ export default class LightGameScene extends FXScene {
         }
     }
 
-    _initGroup() {
-        this.group = new Group();
-        this._initLightOff();
-        this.group.scale.set(
-            this.camera.widthVisible,
-            this.camera.heightVisible,
-            1
-        );
-        this.scene.add(this.group);
+    _openLight(mesh) {
+        mesh.material.opacity = 1
     }
 
     destroy() {
-        super.destroy();
-        if (this.group) this.scene.remove(this.group)
+        document.removeEventListener("keydown", this._onDocumentKeyDown.bind(this), false);
         if (this.groupText) this.scene.remove(this.groupText)
+        for (let i = this.group.children.length - 1; i >= 0; i--) {
+            const child = this.group.children[i]
+            child.material.opacity = 0
+        }
     }
 }

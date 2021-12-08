@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import EventEmitter from './EventEmitter.js'
+import {NearestFilter} from "three";
 
 export default class Resources extends EventEmitter
 {
@@ -66,6 +67,12 @@ export default class Resources extends EventEmitter
 
     sourceLoaded(source, file)
     {
+        // Texture
+        if(source.type === 'texture') {
+            file.generateMipmaps = false
+            file.minFilter = NearestFilter
+        }
+
         this.items[source.name] = file
 
         this.loaded++

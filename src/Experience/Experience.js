@@ -6,7 +6,6 @@ import Renderer from './Renderer.js'
 import Video from "./Components/Video";
 import VideoScene from "./Scene/VideoScene";
 import TransitionScene from "./Scene/Core/TransitionScene";
-import WorldScene from "./Scene/WorldScene";
 import BlackScene from "./Scene/BlackScene";
 import Overlay from "./Overlay";
 import GameManager from "./GameManager";
@@ -74,7 +73,6 @@ export default class Experience {
         this.difficultyGameLevel = 1
 
         this.burgerGameScene = new BurgerGameScene()
-        this.marketGameScene = new MarketGameScene()
         this.lightGameScene = new LightGameScene()
         this.marketGameScene = new MarketGameScene()
 
