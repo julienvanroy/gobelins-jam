@@ -14,9 +14,9 @@ export default class MarketGameScene extends FXScene {
         this.positionMouseMesh = new Vector3(0, 0, 0);
         this.limitScreen = new Vector3(1.7, 1.8, 0);
 
-        this.resources = this.experience.resources
+        this.time = this.experience.time
 
-        this.idInterval = null
+        this.resources = this.experience.resources
 
         this.minProduct = Math.ceil(1);
         this.maxProduct = Math.floor(12);
@@ -34,15 +34,15 @@ export default class MarketGameScene extends FXScene {
         switch (this.difficultyGameLevel) {
             case 1:
                 this.speed = 0.01
-                this.timeInterval = 500
+                this.timeInterval = 0.500
                 break;
             case 2:
                 this.speed = 0.025
-                this.timeInterval = 300
+                this.timeInterval = 0.300
                 break;
             case 3:
                 this.speed = 0.05
-                this.timeInterval = 200
+                this.timeInterval = 0.200
                 break;
             default:
                 return;
@@ -109,7 +109,7 @@ export default class MarketGameScene extends FXScene {
     }
 
     startGame() {
-        this.idInterval = setInterval(() => this.addProduct(), this.timeInterval)
+        this.isStartGame = true
     }
 
     _detectCollisionObject(object) {
@@ -139,6 +139,15 @@ export default class MarketGameScene extends FXScene {
 
     update(_rtt) {
         super.update(_rtt)
+        if(this.isStartGame) {
+            const time = this.time.clock.getElapsedTime()
+
+            if ( time > this.timeInterval ) {
+
+                this.addProduct()
+                this.time.clock.start();
+            }
+        }
         if (this?.cart) {
             if (this.positionMouseMesh.x >= this.limitScreen.x) {
                 this.cart.position.x = this.limitScreen.x
@@ -172,7 +181,7 @@ export default class MarketGameScene extends FXScene {
     }
 
     stopGame() {
-        clearInterval(this.idInterval)
+        this.isStartGame = false
     }
 
     destroy() {
