@@ -1,5 +1,5 @@
 import FXScene from "../Core/FXScene";
-import {Mesh, MeshBasicMaterial, PlaneBufferGeometry, NearestFilter} from "three";
+import {Mesh, MeshBasicMaterial, PlaneBufferGeometry} from "three";
 import {gsap} from "gsap";
 import * as Tone from "tone";
 
@@ -17,8 +17,6 @@ export default class BurgerGameScene extends FXScene {
         this.difficultyGameLevel = this.experience.difficultyGameLevel
         this.setWinCondition()
         const colorTexture = this.resources.items[`burgerGame${this.difficultyGameLevel}Background`]
-        colorTexture.generateMipmaps = false
-        colorTexture.minFilter = NearestFilter
         const material = new MeshBasicMaterial({map: colorTexture});
         const mesh = new Mesh(this.geometryPlane, material)
         this.scene.add(mesh)
@@ -47,10 +45,8 @@ export default class BurgerGameScene extends FXScene {
         if (event.defaultPrevented || this.isWin) return;
         switch (event.keyCode) {
             case 32:
-                const colorTexture = this.resources.items[`burgerGame${this.difficultyGameLevel}-${this.counterWinCondition}`]
-                colorTexture.generateMipmaps = false
-                colorTexture.minFilter = NearestFilter
-                const material = new MeshBasicMaterial({map: colorTexture, transparent: true});
+                const mapTexture = this.resources.items[`burgerGame${this.difficultyGameLevel}-${this.counterWinCondition}`]
+                const material = new MeshBasicMaterial({map: mapTexture, transparent: true});
                 const mesh = new Mesh(this.geometryPlane, material)
                 mesh.position.y = 3
                 this.scene.add(mesh)

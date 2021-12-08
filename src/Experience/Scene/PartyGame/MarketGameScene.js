@@ -2,7 +2,6 @@ import FXScene from "../Core/FXScene";
 import {
     Mesh,
     MeshBasicMaterial,
-    NearestFilter,
     PlaneBufferGeometry,
     PlaneGeometry,
     Vector3,
@@ -59,16 +58,12 @@ export default class MarketGameScene extends FXScene {
         const geometry = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
 
         const colorTexture = this.resources.items.marketGameBackground
-        colorTexture.generateMipmaps = false
-        colorTexture.minFilter = NearestFilter
 
         const materialBg = new MeshBasicMaterial({map: colorTexture, transparent: true});
         const background = new Mesh(geometry, materialBg)
         this.scene.add(background)
 
         const screenTexture = this.resources.items.marketGameScreen
-        screenTexture.generateMipmaps = false
-        screenTexture.minFilter = NearestFilter
 
         const materialScreen = new MeshBasicMaterial({map: screenTexture, transparent: true});
         const screen = new Mesh(geometry, materialScreen)
@@ -79,8 +74,6 @@ export default class MarketGameScene extends FXScene {
     _initCart() {
         const geometry = new PlaneBufferGeometry(0.5, 0.5);
         const colorTexture = this.resources.items.marketGameCart
-        colorTexture.generateMipmaps = false
-        colorTexture.minFilter = NearestFilter
         const material = new MeshBasicMaterial({map: colorTexture, transparent: true});
 
         this.cart = new Mesh(geometry, material);
@@ -93,8 +86,6 @@ export default class MarketGameScene extends FXScene {
         const max = Math.floor(12);
         const random = Math.floor(Math.random() * (max - min)) + min;
         const texture = this.resources.items[`marketGameProduct${random}`]
-        texture.generateMipmaps = false
-        texture.minFilter = NearestFilter
         const material = new MeshBasicMaterial({map: texture, transparent: true});
         const product = new Mesh(this.geometryProduct, material);
         product.position.x = Math.random() * (this.limitScreen.x - (-this.limitScreen.x)) - this.limitScreen.x;

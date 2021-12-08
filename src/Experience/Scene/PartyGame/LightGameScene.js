@@ -2,7 +2,6 @@ import FXScene from "../Core/FXScene";
 import {
     Mesh,
     MeshBasicMaterial,
-    NearestFilter,
     PlaneBufferGeometry,
     Group,
 } from "three";
@@ -41,8 +40,6 @@ export default class LightGameScene extends FXScene {
         const geometry = new PlaneBufferGeometry(this.camera.widthVisible, this.camera.heightVisible);
         const colorTexture =
             this.resources.items[`lightGame${this.difficultyGameLevel}Background`];
-        colorTexture.generateMipmaps = false;
-        colorTexture.minFilter = NearestFilter;
         const material = new MeshBasicMaterial({
             map: colorTexture,
             transparent: true,
