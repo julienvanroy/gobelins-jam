@@ -37,12 +37,12 @@ export default class MarketGameScene extends FXScene {
                 this.timeInterval = 0.500
                 break;
             case 2:
-                this.speed = 0.025
-                this.timeInterval = 0.300
+                this.speed = 0.0175
+                this.timeInterval = 0.400
                 break;
             case 3:
-                this.speed = 0.05
-                this.timeInterval = 0.200
+                this.speed = 0.025
+                this.timeInterval = 0.300
                 break;
             default:
                 return;
