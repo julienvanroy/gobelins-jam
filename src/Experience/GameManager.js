@@ -61,6 +61,7 @@ export default class GameManager {
             this.clearChrono()
             this.isPartyGame = false
             if(this.indexCurrentGame === 2) {
+                this.currentGame.stopGame()
                 if(this.currentGame.isLost) this.isPartyGameLost = true
                 else this.isPartyGameWin = true
             } else this.isPartyGameLost = true

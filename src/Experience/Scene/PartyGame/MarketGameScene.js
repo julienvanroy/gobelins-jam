@@ -126,7 +126,8 @@ export default class MarketGameScene extends FXScene {
         const isCollisionY = !!(objectPos.y + objectHeight >= caddiePos.y - halfCaddieHeight && objectPos.y - objectHeight <= caddiePos.y + halfCaddieHeight);
 
         if (isCollisionX && isCollisionY) {
-            this.destroyMesh(object)
+            this.destroyMeshProduct(object)
+            this.productsGame = this.productsGame.filter(product => product !== object)
         }
     }
 
@@ -155,17 +156,17 @@ export default class MarketGameScene extends FXScene {
             } else if (this.positionMouseMesh.x <= -this.limitScreen.x) {
                 this.cart.position.x = -this.limitScreen.x;
             } else this.cart.position.x = this.positionMouseMesh.x;
-            this.productsGame.map(product => {
+            this.productsGame.map((product) => {
                 this._detectCollisionObject(product)
                 product.position.y -= this.speed
-                if(product.position.y <= -this.limitScreen.y) {
+                if(product.position.y <= -1) {
                     this.isLost = true
                 }
             })
         }
     }
 
-    destroyMesh(mesh) {
+    destroyMeshProduct(mesh) {
         if (mesh instanceof Mesh) {
             mesh.geometry.dispose()
             // Loop through the material properties
@@ -188,7 +189,8 @@ export default class MarketGameScene extends FXScene {
     destroy() {
         this.stopGame()
         for (let i = this.productsGame.length - 1; i >= 0; i--) {
-            this.destroyMesh(this.productsGame[i])
+            this.destroyMeshProduct(this.productsGame[i])
         }
+        this.productsGame = []
     }
 }
